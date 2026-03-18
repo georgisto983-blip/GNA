@@ -1,4 +1,4 @@
-# GNC
+# GNA
 ## Workflow1
 Exaple imput for calculating half-life by using data from single plunger distance:
 ```
