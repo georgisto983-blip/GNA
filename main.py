@@ -7,7 +7,7 @@ mode_list = {
     "2": "calculate half-life by multiple distances"
 }
 
-print("\n-------This is GNC V1.2 (Georgi's Nuclear Calculator)-------\n")
+print("\n-------This is GNA V1.2 (Georgi's Nuclear Assistant)-------\n")
 
 data = Validator.validate_hand_or_file()
 
