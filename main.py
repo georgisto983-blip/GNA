@@ -1,39 +1,27 @@
-from classes.calculator import Calculator
-from classes.validator import Validator
+"""GNA — Georgi's Nuclear Assistant v2.0
 
-#dictionary
-mode_list = {
-    "1": "calculate half-life by one distance",
-    "2": "calculate half-life by multiple distances"
-}
+Desktop application for nuclear physics calculations and experiment support.
+"""
 
-print("\n-------This is GNA V1.2 (Georgi's Nuclear Assistant)-------\n")
+import sys
+import matplotlib
+matplotlib.use("QtAgg")  # must be set before any other matplotlib imports
 
-data = Validator.validate_hand_or_file()
-
-if data:
-    hand_or_file_check = 'y'
-else:
-    hand_or_file_check = 'n'
-
-while True:
-    workmode = Validator.validate_workmode(mode_list, data)
-
-    calculator = Calculator(data)
-    #TODO: manage workmode
-    if workmode == '1':
-        calculator.get_halflife_by_single_distance(hand_or_file_check)
-    
-    elif workmode == '2':
-        calculator.get_halflife_by_multiple_distances()
-    
-
-    cont = Validator.validate_yes_no(hand_or_file_check)
-
-    if cont.lower() == 'n':
-      break
-    elif cont.lower() == 'y':
-      continue
+from PyQt6.QtWidgets import QApplication
+from app.main_window import MainWindow
+from app.theme import STYLESHEET
 
 
-print("\n-------End of calculation-------")
+def main():
+    app = QApplication(sys.argv)
+    app.setApplicationName("GNA")
+    app.setStyleSheet(STYLESHEET)
+
+    window = MainWindow()
+    window.show()
+
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
