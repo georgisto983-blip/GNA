@@ -22,6 +22,7 @@ from PyQt6.QtGui import QPixmap
 from app.instruments.nuclear_utils.pace4_parser import parse_pace4_html
 from app.result_window import ResultWindow
 from app import gnuplot
+from app.gnuplot import LEGEND_STYLES
 
 
 class Pace4Panel(QWidget):
@@ -132,6 +133,14 @@ class Pace4Panel(QWidget):
             ch_btn_row.addWidget(b)
         ch_btn_row.addStretch()
 
+        ch_btn_row.addWidget(QLabel("Legend:"))
+        self._legend_combo = QComboBox()
+        for name in LEGEND_STYLES:
+            self._legend_combo.addItem(name)
+        self._legend_combo.setCurrentText("Top-right (default)")
+        self._legend_combo.setToolTip("Legend placement style")
+        ch_btn_row.addWidget(self._legend_combo)
+
         plot_btn = QPushButton("Plot with gnuplot")
         plot_btn.clicked.connect(self._do_gnuplot)
         ch_btn_row.addWidget(plot_btn)
@@ -191,6 +200,9 @@ class Pace4Panel(QWidget):
                     raise ValueError("No residue data found")
                 self._files[path] = result
                 new_paths.append(path)
+
+                from app.recent_files import add as _rf_add
+                _rf_add(path, "PACE4")
 
                 energy = result["energy_MeV"]
                 name = Path(path).name
@@ -396,7 +408,10 @@ class Pace4Panel(QWidget):
             return
         try:
             reaction = self._get_reaction_label()
-            path, pixmap = gnuplot.plot_pace4(channels, reaction)
+            legend = self._legend_combo.currentText()
+            path, pixmap = gnuplot.plot_pace4(
+                channels, reaction, legend_style=legend,
+            )
             self._last_plot_path = path
             self._plot_label.setPixmap(pixmap)
             self._plot_label.setText("")

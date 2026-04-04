@@ -211,6 +211,8 @@ class MultiDistancePanel(QWidget):
         try:
             with open(path) as f:
                 data = json.load(f)
+            from app.recent_files import add as _rf_add
+            _rf_add(path, "Plunger (RDDS)")
 
             # Beta
             beta_raw = data.get("beta", [])

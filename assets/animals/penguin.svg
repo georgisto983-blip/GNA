@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Cute standing penguin silhouette -->
+  <g fill="#000">
+    <!-- Body -->
+    <ellipse cx="100" cy="130" rx="38" ry="52"/>
+    <!-- Head -->
+    <circle cx="100" cy="66" r="26"/>
+    <!-- White belly -->
+    <ellipse cx="100" cy="138" rx="24" ry="40" fill="#fff"/>
+    <!-- White face -->
+    <ellipse cx="100" cy="68" rx="16" ry="18" fill="#fff"/>
+    <!-- Eyes -->
+    <circle cx="92" cy="64" r="4" fill="#333"/>
+    <circle cx="108" cy="64" r="4" fill="#333"/>
+    <circle cx="93" cy="63" r="1.5" fill="#fff"/>
+    <circle cx="109" cy="63" r="1.5" fill="#fff"/>
+    <!-- Beak -->
+    <polygon points="100,72 94,78 106,78" fill="#ff9944"/>
+    <!-- Blush cheeks -->
+    <circle cx="84" cy="72" r="5" fill="#ffaaaa" opacity="0.6"/>
+    <circle cx="116" cy="72" r="5" fill="#ffaaaa" opacity="0.6"/>
+    <!-- Wings/flippers -->
+    <ellipse cx="60" cy="130" rx="10" ry="30" transform="rotate(10 60 130)"/>
+    <ellipse cx="140" cy="130" rx="10" ry="30" transform="rotate(-10 140 130)"/>
+    <!-- Feet -->
+    <ellipse cx="85" cy="182" rx="14" ry="6" fill="#ff9944"/>
+    <ellipse cx="115" cy="182" rx="14" ry="6" fill="#ff9944"/>
+  </g>
+</svg>

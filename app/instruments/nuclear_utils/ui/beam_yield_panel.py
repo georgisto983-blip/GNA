@@ -78,7 +78,16 @@ class BeamYieldPanel(QWidget):
             )
             self.result_label.setText(text)
 
+            from app.action_history import record
+            params = {k: v.text() for k, v in self._inputs.items()}
+            record("Accelerator", f"Beam yield: {result['per_hour']:.1f} counts/hr", params)
+
         except ValueError:
             QMessageBox.warning(self, "Input Error", "All fields must be valid numbers.")
         except Exception as e:
             QMessageBox.critical(self, "Error", str(e))
+
+    def restore_params(self, params: dict):
+        for key, val in params.items():
+            if key in self._inputs:
+                self._inputs[key].setText(str(val))

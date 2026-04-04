@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GNA — Layout Concepts</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0f; color: #e0e0e0; font-family: 'Segoe UI', 'Ubuntu', sans-serif; padding: 40px; }
+  h1 { text-align: center; color: #b060ff; font-size: 28px; margin-bottom: 10px; }
+  .subtitle { text-align: center; color: #6060a0; margin-bottom: 50px; font-size: 13px; }
+
+  .concept-section { margin-bottom: 60px; border: 1px solid #1c1c30; padding: 30px; background: #0d0d14; }
+  .concept-title { font-size: 20px; font-weight: bold; margin-bottom: 5px; color: #b060ff; }
+  .concept-desc { color: #6060a0; font-size: 13px; margin-bottom: 24px; }
+  .note { background: #12121e; border-left: 3px solid #b060ff; padding: 10px 14px; color: #b0b0d8; font-size: 12px; margin-bottom: 20px; }
+
+  /* ── Full app mockup ── */
+  .app-frame { display: flex; border: 1px solid #303050; height: 520px; overflow: hidden; font-family: 'Segoe UI', 'Ubuntu', sans-serif; }
+
+  /* Sidebar */
+  .sidebar { width: 210px; flex-shrink: 0; background: #08080e; display: flex; flex-direction: column; border-right: 1px solid #303050; }
+  .sidebar-header { padding: 18px 16px 14px; }
+  .sidebar-header .gna { font-size: 26px; font-weight: 900; color: #b060ff; letter-spacing: 2px; }
+  .sidebar-header .sub { font-size: 10px; color: #6060a0; margin-top: 2px; }
+  .sidebar-sep { height: 1px; background: #303050; margin: 0 12px; }
+  .nav-list { flex: 1; padding: 8px 0; display: flex; flex-direction: column; }
+  .nav-item { padding: 11px 16px; font-size: 13px; font-weight: 700; color: #6060a0; border-left: 3px solid transparent; cursor: default; transition: none; }
+  .nav-item.active { background: #0c0c14; color: #b060ff; border-left-color: #b060ff; }
+  .nav-item:hover:not(.active) { background: #12121e; color: #b0b0d8; }
+  .sidebar-bottom { padding: 10px 14px; border-top: 1px solid #303050; }
+  .sidebar-bottom .theme-label { font-size: 9px; color: #6060a0; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  .theme-select { background: #1c1c30; color: #b0b0d8; border: 1px solid #303050; padding: 4px 8px; font-size: 11px; width: 100%; }
+  .sidebar-version { padding: 8px 16px; font-size: 10px; color: #303050; }
+
+  /* Content */
+  .content { flex: 1; overflow: auto; }
+
+  /* ── Welcome screen ── */
+  .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0c0c14; text-align: center; }
+  .welcome-logo { font-size: 72px; font-weight: 900; color: #b060ff; letter-spacing: 8px; margin-bottom: 8px; text-shadow: 0 0 40px rgba(176,96,255,0.2); }
+  .welcome-full { font-size: 16px; color: #6060a0; letter-spacing: 3px; margin-bottom: 30px; }
+  .welcome-tagline { font-size: 13px; color: #4040708; max-width: 380px; line-height: 1.7; }
+  .welcome-tagline { color: #404070; }
+  .welcome-divider { width: 60px; height: 2px; background: #b060ff; margin: 20px 0; opacity: 0.4; }
+  .welcome-tools { display: flex; gap: 20px; margin-top: 10px; }
+  .welcome-tool-chip { padding: 6px 14px; border: 1px solid #303050; color: #6060a0; font-size: 11px; font-weight: 600; }
+  .welcome-version { position: absolute; bottom: 20px; right: 30px; font-size: 11px; color: #303050; }
+
+  /* ── Active tool content ── */
+  .tool-content { background: #0c0c14; padding: 20px; height: 100%; overflow-y: auto; }
+  .tool-header { font-size: 18px; font-weight: 800; color: #e8e8ff; margin-bottom: 3px; }
+  .tool-desc { font-size: 12px; color: #6060a0; margin-bottom: 16px; }
+
+  .group { border: 1px solid #303050; background: #12121e; padding: 14px; margin-bottom: 12px; }
+  .group-title { font-size: 11px; font-weight: 700; color: #4090ff; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+
+  .input-grid { display: grid; grid-template-columns: 130px 1fr 50px; gap: 6px 10px; align-items: center; }
+  .input-label { font-size: 12px; color: #a8a8d4; text-align: right; }
+  .input-field { background: #1c1c30; border: 1px solid #303050; color: #e8e8ff; padding: 6px 10px; font-size: 13px; height: 30px; }
+  .input-field:focus { border-color: #b060ff; outline: none; }
+  .input-unit { font-size: 11px; color: #6060a0; }
+
+  .btn-row { display: flex; gap: 8px; margin: 14px 0; }
+  .btn-primary { background: #b060ff; color: #08080e; border: none; padding: 8px 22px; font-weight: 800; font-size: 13px; cursor: default; }
+  .btn-secondary { background: transparent; color: #b0b0d8; border: 1px solid #303050; padding: 7px 16px; font-weight: 600; font-size: 12px; cursor: default; }
+
+  .result-box { border: 1px solid #303050; background: #12121e; padding: 12px; margin-top: 10px; }
+  .result-value { color: #40e890; font-size: 16px; font-weight: 700; }
+
+  .tab-bar { display: flex; border-bottom: 1px solid #303050; margin-bottom: 16px; }
+  .tab { padding: 8px 20px; font-size: 12px; font-weight: 700; color: #6060a0; border-bottom: 2px solid transparent; cursor: default; }
+  .tab.active { color: #b060ff; border-bottom-color: #b060ff; }
+
+  /* Comparison markers */
+  .old-new { display: flex; gap: 24px; margin-bottom: 20px; }
+  .old-new > div { flex: 1; }
+  .compare-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; padding: 4px 10px; display: inline-block; }
+  .compare-label.old { color: #ff4070; border: 1px solid #ff4070; }
+  .compare-label.new { color: #40e890; border: 1px solid #40e890; }
+
+  /* Scrollable content mockup */
+  .scroll-indicator { text-align: center; color: #303050; font-size: 11px; padding: 8px; border-top: 1px dashed #303050; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<h1>GNA — Layout & Shape Concepts</h1>
+<p class="subtitle">Using palette A (Neon Prism) as reference. All corners are sharp (0px radius). No emoji icons.</p>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CONCEPT 1: Welcome Screen -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">1 — Welcome Screen (no tool selected)</div>
+  <div class="concept-desc">When the app starts, no tool is active. The right side shows GNA branding in a clean, centered layout.</div>
+
+  <div class="app-frame">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="gna">GNA</div>
+        <div class="sub">Georgi's Nuclear Assistant</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="nav-list">
+        <div class="nav-item">RDDS</div>
+        <div class="nav-item">J-Coupling</div>
+        <div class="nav-item">Talmi Calculator</div>
+        <div class="nav-item">PACE4</div>
+        <div class="nav-item">Script Launcher</div>
+        <div class="nav-item">Accelerator</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-bottom">
+        <div class="theme-label">Theme</div>
+        <select class="theme-select"><option>Neon Prism</option></select>
+      </div>
+      <div class="sidebar-version">v2.0</div>
+    </div>
+    <div class="content">
+      <div class="welcome">
+        <div class="welcome-logo">GNA</div>
+        <div class="welcome-full">GEORGI'S NUCLEAR ASSISTANT</div>
+        <div class="welcome-divider"></div>
+        <div class="welcome-tagline">
+          Nuclear physics analysis suite for RDDS lifetime measurements,<br>
+          kinematics, shell model calculations, and experiment support.
+        </div>
+        <div class="welcome-tools">
+          <div class="welcome-tool-chip">RDDS</div>
+          <div class="welcome-tool-chip">J-Coupling</div>
+          <div class="welcome-tool-chip">Talmi</div>
+          <div class="welcome-tool-chip">PACE4</div>
+          <div class="welcome-tool-chip">Scripts</div>
+          <div class="welcome-tool-chip">Accelerator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top: 16px;">
+    <strong>Key:</strong> No tool selected = sidebar has no highlighted item. Right side is a branded welcome.
+    Clicking any tool in the sidebar activates it. The welcome screen is never shown again until restart (or could be a "home" button).
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CONCEPT 2: Old vs New Shape Comparison -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">2 — Shape: Rounded vs Sharp</div>
+  <div class="concept-desc">Current UI uses border-radius: 6-8px. New UI uses 0px everywhere for a crisp, blocky look.</div>
+
+  <div class="old-new">
+    <div>
+      <span class="compare-label old">CURRENT (rounded)</span>
+      <div style="margin-top: 12px;">
+        <div style="background:#292e42; border: 1px solid #3b4261; border-radius: 8px; padding: 14px; margin-bottom: 10px;">
+          <div style="color:#bb9af7; font-size: 12px; font-weight: 700; margin-bottom: 8px;">Beam Parameters</div>
+          <input style="background:#1e1e2e; border: 1px solid #3b4261; border-radius: 4px; color: #c0caf5; padding: 6px 10px; width: 100%; margin-bottom: 6px;" value="48.0 MeV">
+          <input style="background:#1e1e2e; border: 1px solid #3b4261; border-radius: 4px; color: #c0caf5; padding: 6px 10px; width: 100%;" value="0.0312 β">
+        </div>
+        <div style="background:#7aa2f7; color:#1a1b26; border-radius: 6px; padding: 8px 20px; display: inline-block; font-weight: bold; font-size: 13px;">Calculate</div>
+        <div style="background:#292e42; color:#9ece6a; border: 1px solid #3b4261; border-radius: 6px; padding: 12px; margin-top: 10px; font-weight: bold;">T₁/₂ = 12.4 ± 1.8 ps</div>
+      </div>
+    </div>
+    <div>
+      <span class="compare-label new">NEW (sharp, crisp)</span>
+      <div style="margin-top: 12px;">
+        <div style="background:#12121e; border: 1px solid #303050; padding: 14px; margin-bottom: 10px;">
+          <div style="color:#4090ff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Beam Parameters</div>
+          <input style="background:#1c1c30; border: 1px solid #303050; color: #e8e8ff; padding: 6px 10px; width: 100%; margin-bottom: 6px; font-size: 13px;" value="48.0 MeV">
+          <input style="background:#1c1c30; border: 1px solid #303050; color: #e8e8ff; padding: 6px 10px; width: 100%; font-size: 13px;" value="0.0312 β">
+        </div>
+        <div style="background:#b060ff; color:#08080e; padding: 8px 22px; display: inline-block; font-weight: 800; font-size: 13px;">Calculate</div>
+        <div style="background:#12121e; color:#40e890; border: 1px solid #303050; padding: 12px; margin-top: 10px; font-weight: 700; font-size: 16px;">T₁/₂ = 12.4 ± 1.8 ps</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CONCEPT 3: Full RDDS tool view -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">3 — Full Tool View: RDDS (Multi Distance)</div>
+  <div class="concept-desc">Shows the tool active. Bigger inputs, scrollable content, compact margins.</div>
+
+  <div class="app-frame">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="gna">GNA</div>
+        <div class="sub">Georgi's Nuclear Assistant</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="nav-list">
+        <div class="nav-item active">RDDS</div>
+        <div class="nav-item">J-Coupling</div>
+        <div class="nav-item">Talmi Calculator</div>
+        <div class="nav-item">PACE4</div>
+        <div class="nav-item">Script Launcher</div>
+        <div class="nav-item">Accelerator</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-bottom">
+        <div class="theme-label">Theme</div>
+        <select class="theme-select"><option>Neon Prism</option></select>
+      </div>
+      <div class="sidebar-version">v2.0</div>
+    </div>
+    <div class="content">
+      <div class="tool-content">
+        <div class="tool-header">RDDS Half-Life</div>
+        <div class="tool-desc">Recoil Distance Doppler Shift method — multi distance fit</div>
+
+        <div class="tab-bar">
+          <div class="tab">Single Distance</div>
+          <div class="tab active">Multi Distance</div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">Beam Parameters</div>
+          <div class="input-grid">
+            <span class="input-label">β (recoil)</span>
+            <input class="input-field" value="0.0312">
+            <span class="input-unit"></span>
+            <span class="input-label">σ_β</span>
+            <input class="input-field" value="0.0005">
+            <span class="input-unit"></span>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">Distance Measurements</div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+            <thead>
+              <tr>
+                <th style="background: #1c1c30; color: #b0b0d8; padding: 8px; border: 1px solid #303050; text-align: center;">d (μm)</th>
+                <th style="background: #1c1c30; color: #b0b0d8; padding: 8px; border: 1px solid #303050; text-align: center;">σ_d</th>
+                <th style="background: #1c1c30; color: #b0b0d8; padding: 8px; border: 1px solid #303050; text-align: center;">I_shifted</th>
+                <th style="background: #1c1c30; color: #b0b0d8; padding: 8px; border: 1px solid #303050; text-align: center;">σ_shift</th>
+                <th style="background: #1c1c30; color: #b0b0d8; padding: 8px; border: 1px solid #303050; text-align: center;">I_unshift</th>
+                <th style="background: #1c1c30; color: #b0b0d8; padding: 8px; border: 1px solid #303050; text-align: center;">σ_unshift</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">14</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">2</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">1240</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">45</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">860</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">32</td>
+              </tr>
+              <tr>
+                <td style="background: #0c0c14; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">25</td>
+                <td style="background: #0c0c14; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">2</td>
+                <td style="background: #0c0c14; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">1680</td>
+                <td style="background: #0c0c14; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">52</td>
+                <td style="background: #0c0c14; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">520</td>
+                <td style="background: #0c0c14; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">28</td>
+              </tr>
+              <tr>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">40</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">2</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">2100</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">61</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">310</td>
+                <td style="background: #12121e; color: #e8e8ff; padding: 6px 8px; border: 1px solid #303050; text-align: center;">22</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="btn-row">
+          <div class="btn-primary">Calculate & Fit</div>
+          <div class="btn-secondary">Add Row</div>
+          <div class="btn-secondary">Remove Row</div>
+          <div class="btn-secondary">Load JSON</div>
+          <div class="btn-secondary">Clear</div>
+        </div>
+
+        <div class="result-box">
+          <div class="result-value">T₁/₂ = 12.4 ± 1.8 ps</div>
+        </div>
+
+        <div class="scroll-indicator">↓ Plot and additional results below (scrollable) ↓</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CONCEPT 4: Accelerator combined tool -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">4 — Accelerator Tool (Kinematics + Beam Yield merged)</div>
+  <div class="concept-desc">Two tabs inside one "Accelerator" instrument. Wider input fields. No cramped layouts.</div>
+
+  <div class="app-frame">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="gna">GNA</div>
+        <div class="sub">Georgi's Nuclear Assistant</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="nav-list">
+        <div class="nav-item">RDDS</div>
+        <div class="nav-item">J-Coupling</div>
+        <div class="nav-item">Talmi Calculator</div>
+        <div class="nav-item">PACE4</div>
+        <div class="nav-item">Script Launcher</div>
+        <div class="nav-item active">Accelerator</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-bottom">
+        <div class="theme-label">Theme</div>
+        <select class="theme-select"><option>Neon Prism</option></select>
+      </div>
+      <div class="sidebar-version">v2.0</div>
+    </div>
+    <div class="content">
+      <div class="tool-content">
+        <div class="tool-header">Accelerator</div>
+        <div class="tool-desc">Beam kinematics, Coulomb barrier, and yield estimates</div>
+
+        <div class="tab-bar">
+          <div class="tab active">Kinematics</div>
+          <div class="tab">Beam Yield</div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">Beam & Reaction</div>
+          <div class="input-grid" style="grid-template-columns: 130px 1fr 60px;">
+            <span class="input-label">E_beam</span>
+            <input class="input-field" value="48.0" style="min-width: 200px;">
+            <span class="input-unit">MeV</span>
+            <span class="input-label">A_beam</span>
+            <input class="input-field" value="13">
+            <span class="input-unit"></span>
+            <span class="input-label">Z_beam</span>
+            <input class="input-field" value="6">
+            <span class="input-unit"></span>
+            <span class="input-label">A_target</span>
+            <input class="input-field" value="100">
+            <span class="input-unit"></span>
+            <span class="input-label">Z_target</span>
+            <input class="input-field" value="42">
+            <span class="input-unit"></span>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <div class="btn-primary">Calculate Kinematics</div>
+          <div class="btn-secondary">Load JSON</div>
+          <div class="btn-secondary">Clear</div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">Results</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div style="padding: 8px; border: 1px solid #303050; background: #0c0c14;">
+              <div style="font-size: 10px; color: #6060a0; text-transform: uppercase; margin-bottom: 4px;">Beam velocity</div>
+              <div style="color: #e8e8ff; font-size: 14px; font-weight: 700;">β = 0.0312 (3.12% c)</div>
+            </div>
+            <div style="padding: 8px; border: 1px solid #303050; background: #0c0c14;">
+              <div style="font-size: 10px; color: #6060a0; text-transform: uppercase; margin-bottom: 4px;">Coulomb Barrier</div>
+              <div style="color: #e8e8ff; font-size: 14px; font-weight: 700;">V_C = 42.3 MeV (E/V = 1.13)</div>
+            </div>
+            <div style="padding: 8px; border: 1px solid #303050; background: #0c0c14;">
+              <div style="font-size: 10px; color: #6060a0; text-transform: uppercase; margin-bottom: 4px;">CN Recoil</div>
+              <div style="color: #e8e8ff; font-size: 14px; font-weight: 700;">β_CN = 0.00358</div>
+            </div>
+            <div style="padding: 8px; border: 1px solid #303050; background: #0c0c14;">
+              <div style="font-size: 10px; color: #6060a0; text-transform: uppercase; margin-bottom: 4px;">Nuclear Radii</div>
+              <div style="color: #e8e8ff; font-size: 14px; font-weight: 700;">R₁ = 2.82 fm, R₂ = 5.57 fm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CONCEPT 5: Input sizing -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">5 — Input/Output Sizing Fix</div>
+  <div class="concept-desc">Comparison: cramped (old) vs spacious (new). All group boxes, inputs, and outputs have generous sizing. Content scrolls if needed.</div>
+
+  <div class="old-new">
+    <div>
+      <span class="compare-label old">CURRENT — cramped inputs</span>
+      <div style="margin-top: 12px; width: 280px; background: #1e1e2e; border: 1px solid #3b4261; border-radius: 8px; padding: 10px;">
+        <div style="color: #bb9af7; font-size: 11px; margin-bottom: 6px;">Talmi Input Vectors</div>
+        <div style="display: flex; gap: 4px; margin-bottom: 4px;">
+          <input style="width: 50px; background: #292e42; border: 1px solid #3b4261; border-radius: 3px; color: #c0caf5; padding: 3px 4px; font-size: 10px;" value="v1">
+          <input style="width: 50px; background: #292e42; border: 1px solid #3b4261; border-radius: 3px; color: #c0caf5; padding: 3px 4px; font-size: 10px;" value="v2">
+          <input style="width: 50px; background: #292e42; border: 1px solid #3b4261; border-radius: 3px; color: #c0caf5; padding: 3px 4px; font-size: 10px;" value="v3">
+          <input style="width: 50px; background: #292e42; border: 1px solid #3b4261; border-radius: 3px; color: #c0caf5; padding: 3px 4px; font-size: 10px;" value="v4">
+        </div>
+        <div style="color: #565f89; font-size: 9px;">↑ text gets cut off, hard to read</div>
+      </div>
+    </div>
+    <div>
+      <span class="compare-label new">NEW — full-width, generous</span>
+      <div style="margin-top: 12px; background: #12121e; border: 1px solid #303050; padding: 14px;">
+        <div style="color: #4090ff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">Talmi Input Vectors</div>
+        <div style="display: grid; grid-template-columns: 80px 1fr 1fr 1fr 1fr; gap: 6px; align-items: center;">
+          <span style="font-size: 11px; color: #a8a8d4;">Method</span>
+          <span style="font-size: 11px; color: #6060a0; text-align: center;">v₁</span>
+          <span style="font-size: 11px; color: #6060a0; text-align: center;">v₂</span>
+          <span style="font-size: 11px; color: #6060a0; text-align: center;">v₃</span>
+          <span style="font-size: 11px; color: #6060a0; text-align: center;">v₄</span>
+          <span style="font-size: 12px; color: #b0b0d8;">exp</span>
+          <input style="background: #1c1c30; border: 1px solid #303050; color: #e8e8ff; padding: 6px 10px; font-size: 13px; width: 100%;" value="0.5821">
+          <input style="background: #1c1c30; border: 1px solid #303050; color: #e8e8ff; padding: 6px 10px; font-size: 13px; width: 100%;" value="0.4312">
+          <input style="background: #1c1c30; border: 1px solid #303050; color: #e8e8ff; padding: 6px 10px; font-size: 13px; width: 100%;" value="0.2146">
+          <input style="background: #1c1c30; border: 1px solid #303050; color: #e8e8ff; padding: 6px 10px; font-size: 13px; width: 100%;" value="0.1023">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CONCEPT 6: Desktop Icon -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">6 — Desktop Icon</div>
+  <div class="concept-desc">Sharp, blocky "GNA" text in dark purple. SVG icon for .desktop launcher.</div>
+
+  <div style="display: flex; gap: 40px; align-items: center; padding: 20px;">
+    <!-- Large preview -->
+    <div style="text-align: center;">
+      <div style="width: 128px; height: 128px; background: #12121e; border: 2px solid #303050; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+        <span style="font-size: 42px; font-weight: 900; color: #b060ff; letter-spacing: 3px; font-family: 'Consolas', 'monospace';">GNA</span>
+      </div>
+      <span style="color: #6060a0; font-size: 11px;">128×128</span>
+    </div>
+    <!-- Medium -->
+    <div style="text-align: center;">
+      <div style="width: 64px; height: 64px; background: #12121e; border: 2px solid #303050; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+        <span style="font-size: 20px; font-weight: 900; color: #b060ff; letter-spacing: 2px; font-family: 'Consolas', 'monospace';">GNA</span>
+      </div>
+      <span style="color: #6060a0; font-size: 11px;">64×64</span>
+    </div>
+    <!-- Small -->
+    <div style="text-align: center;">
+      <div style="width: 48px; height: 48px; background: #12121e; border: 2px solid #303050; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+        <span style="font-size: 14px; font-weight: 900; color: #b060ff; letter-spacing: 1px; font-family: 'Consolas', 'monospace';">GNA</span>
+      </div>
+      <span style="color: #6060a0; font-size: 11px;">48×48</span>
+    </div>
+    <!-- Alt: with border glow -->
+    <div style="text-align: center;">
+      <div style="width: 128px; height: 128px; background: #08080e; border: 3px solid #b060ff; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; box-shadow: 0 0 20px rgba(176,96,255,0.3);">
+        <span style="font-size: 42px; font-weight: 900; color: #b060ff; letter-spacing: 3px; font-family: 'Consolas', 'monospace';">GNA</span>
+      </div>
+      <span style="color: #6060a0; font-size: 11px;">128×128 (purple border variant)</span>
+    </div>
+  </div>
+</div>
+
+<div style="text-align: center; padding: 40px; color: #303050;">
+  — End of layout concepts. Tell me which palette (A/B/C/D) and which icon style you prefer. —
+</div>
+
+</body>
+</html>

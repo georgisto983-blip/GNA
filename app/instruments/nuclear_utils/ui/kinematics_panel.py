@@ -89,7 +89,20 @@ class KinematicsPanel(QWidget):
             )
             self.result_label.setText(text)
 
+            from app.action_history import record
+            params = {k: v.text() for k, v in self._inputs.items()}
+            record(
+                "Accelerator",
+                f"Kinematics: E={E} MeV, A_b={A_b}, Z_b={Z_b}, A_t={A_t}, Z_t={Z_t}",
+                params,
+            )
+
         except ValueError:
             QMessageBox.warning(self, "Input Error", "All fields must be valid numbers.")
         except Exception as e:
             QMessageBox.critical(self, "Error", str(e))
+
+    def restore_params(self, params: dict):
+        for key, val in params.items():
+            if key in self._inputs:
+                self._inputs[key].setText(str(val))

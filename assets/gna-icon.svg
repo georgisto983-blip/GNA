@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Vibrant purple background -->
+  <rect width="256" height="256" rx="32" fill="#6a2cba"/>
+  <!-- Purple glowing border -->
+  <rect x="8" y="8" width="240" height="240" rx="24" fill="none"
+        stroke="#b060ff" stroke-width="4" filter="url(#glow)"/>
+  <!-- GNA text — large, fills width -->
+  <text x="128" y="142" text-anchor="middle" dominant-baseline="central"
+        font-family="'JetBrains Mono', 'Fira Code', 'Consolas', monospace"
+        font-weight="900" font-size="100" fill="#f0e8ff"
+        letter-spacing="-2">GNA</text>
+</svg>

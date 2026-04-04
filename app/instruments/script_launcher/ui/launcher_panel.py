@@ -182,7 +182,7 @@ class LauncherPanel(QWidget):
 
     def _init_ui(self):
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(24, 20, 24, 20)
+        layout.setContentsMargins(14, 14, 14, 14)
         layout.setSpacing(8)
 
         title = QLabel("Script Launcher")

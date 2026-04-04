@@ -1,0 +1,1 @@
+"""Accelerator instrument init."""

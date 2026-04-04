@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Cute stylised owl perched silhouette -->
+  <g fill="#000">
+    <!-- Body -->
+    <ellipse cx="100" cy="135" rx="40" ry="45"/>
+    <!-- Head -->
+    <circle cx="100" cy="72" r="35"/>
+    <!-- Ear tufts -->
+    <polygon points="72,50 60,28 82,48"/>
+    <polygon points="128,50 140,28 118,48"/>
+    <!-- Facial disc -->
+    <circle cx="100" cy="74" r="28" fill="#333"/>
+    <!-- Eye discs -->
+    <circle cx="86" cy="68" r="14" fill="#ddd"/>
+    <circle cx="114" cy="68" r="14" fill="#ddd"/>
+    <!-- Eyes -->
+    <circle cx="86" cy="68" r="9" fill="#ff9900"/>
+    <circle cx="114" cy="68" r="9" fill="#ff9900"/>
+    <circle cx="86" cy="68" r="5" fill="#222"/>
+    <circle cx="114" cy="68" r="5" fill="#222"/>
+    <circle cx="84" cy="66" r="2" fill="#fff"/>
+    <circle cx="112" cy="66" r="2" fill="#fff"/>
+    <!-- Beak -->
+    <polygon points="100,78 95,85 105,85" fill="#ff9944"/>
+    <!-- Chest pattern (V-shapes) -->
+    <path d="M 85 115 L 100 125 L 115 115" stroke="#555" stroke-width="2" fill="none"/>
+    <path d="M 82 125 L 100 137 L 118 125" stroke="#555" stroke-width="2" fill="none"/>
+    <path d="M 80 135 L 100 148 L 120 135" stroke="#555" stroke-width="2" fill="none"/>
+    <!-- Wings folded -->
+    <ellipse cx="62" cy="130" rx="14" ry="35" fill="#222"/>
+    <ellipse cx="138" cy="130" rx="14" ry="35" fill="#222"/>
+    <!-- Feet/talons -->
+    <path d="M 85 175 Q 80 185 75 182 M 85 175 Q 85 187 85 182 M 85 175 Q 90 185 92 182" stroke="#ff9944" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M 115 175 Q 110 185 108 182 M 115 175 Q 115 187 115 182 M 115 175 Q 120 185 125 182" stroke="#ff9944" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Branch -->
+    <line x1="50" y1="180" x2="150" y2="178" stroke="#664422" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>

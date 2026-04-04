@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GNA — Updated Layout Concepts</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0f; color: #e0e0e0; font-family: 'Segoe UI', 'Ubuntu', sans-serif; padding: 40px; }
+  h1 { text-align: center; color: #b060ff; font-size: 28px; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #6060a0; margin-bottom: 50px; font-size: 13px; }
+
+  .concept-section { margin-bottom: 50px; border: 1px solid #1c1c30; padding: 28px; background: #0d0d14; }
+  .concept-title { font-size: 20px; font-weight: bold; margin-bottom: 5px; color: #b060ff; }
+  .concept-desc { color: #6060a0; font-size: 13px; margin-bottom: 20px; }
+  .note { background: #12121e; border-left: 3px solid #b060ff; padding: 10px 14px; color: #b0b0d8; font-size: 12px; margin-bottom: 16px; }
+
+  .app-frame { display: flex; border: 1px solid #303050; height: 520px; overflow: hidden; }
+
+  .sidebar { width: 200px; flex-shrink: 0; background: #08080e; display: flex; flex-direction: column; border-right: 1px solid #303050; }
+  .sidebar-header { padding: 16px 14px 12px; }
+  .sidebar-header .gna { font-size: 24px; font-weight: 900; color: #b060ff; letter-spacing: 2px; }
+  .sidebar-header .sub { font-size: 9px; color: #6060a0; margin-top: 2px; }
+  .sidebar-sep { height: 1px; background: #303050; margin: 0 10px; }
+  .nav-list { flex: 1; padding: 6px 0; }
+  .nav-item { padding: 10px 14px; font-size: 12px; font-weight: 700; color: #6060a0; border-left: 3px solid transparent; }
+  .nav-item.active { background: #0c0c14; color: #b060ff; border-left-color: #b060ff; }
+  .sidebar-bottom { padding: 8px 12px; border-top: 1px solid #303050; }
+  .sidebar-bottom .lbl { font-size: 9px; color: #6060a0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+  .theme-sel { background: #1c1c30; color: #b0b0d8; border: 1px solid #303050; padding: 3px 6px; font-size: 10px; width: 100%; }
+  .sidebar-ver { padding: 6px 14px; font-size: 9px; color: #303050; }
+
+  .content { flex: 1; overflow-y: auto; background: #0c0c14; padding: 18px; }
+  .tool-header { font-size: 17px; font-weight: 800; color: #e8e8ff; margin-bottom: 2px; }
+  .tool-desc { font-size: 11px; color: #6060a0; margin-bottom: 14px; }
+
+  .tab-bar { display: flex; border-bottom: 1px solid #303050; margin-bottom: 14px; }
+  .tab { padding: 7px 18px; font-size: 11px; font-weight: 700; color: #6060a0; border-bottom: 2px solid transparent; }
+  .tab.active { color: #b060ff; border-bottom-color: #b060ff; }
+
+  .group { border: 1px solid #303050; background: #12121e; padding: 12px 14px; margin-bottom: 10px; }
+  .group-title { font-size: 10px; font-weight: 700; color: #4090ff; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+
+  /* SHORT INPUT PATTERN: label | [short input] unit */
+  .field-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .field-label { font-size: 11px; color: #b0b0d8; width: 110px; text-align: right; flex-shrink: 0; }
+  .field-input { width: 110px; height: 28px; background: #1c1c30; border: 1px solid #303050; color: #e8e8ff; padding: 0 8px; font-size: 12px; flex-shrink: 0; }
+  .field-unit { font-size: 10px; color: #6060a0; flex-shrink: 0; min-width: 36px; }
+
+  /* For paired inputs (value ± uncertainty) */
+  .field-pm { font-size: 11px; color: #6060a0; flex-shrink: 0; }
+  .field-input-sm { width: 80px; height: 28px; background: #1c1c30; border: 1px solid #303050; color: #e8e8ff; padding: 0 8px; font-size: 12px; flex-shrink: 0; }
+
+  .btn-row { display: flex; gap: 8px; margin: 12px 0; }
+  .btn-primary { background: #b060ff; color: #08080e; border: none; padding: 7px 20px; font-weight: 800; font-size: 12px; }
+  .btn-secondary { background: transparent; color: #b0b0d8; border: 1px solid #303050; padding: 6px 14px; font-weight: 600; font-size: 11px; }
+
+  .result-box { border: 1px solid #303050; background: #12121e; padding: 10px 14px; }
+  .result-value { color: #40e890; font-size: 15px; font-weight: 700; }
+
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .result-card { padding: 8px 10px; border: 1px solid #303050; background: #0c0c14; }
+  .result-card-label { font-size: 9px; color: #6060a0; text-transform: uppercase; margin-bottom: 3px; letter-spacing: 0.3px; }
+  .result-card-value { color: #e8e8ff; font-size: 13px; font-weight: 700; }
+
+  .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
+  .welcome-logo { font-size: 64px; font-weight: 900; color: #b060ff; letter-spacing: 6px; margin-bottom: 6px; }
+  .welcome-full { font-size: 14px; color: #6060a0; letter-spacing: 3px; margin-bottom: 24px; }
+  .welcome-div { width: 50px; height: 2px; background: #b060ff; margin: 0 0 24px; opacity: 0.4; }
+  .welcome-p { font-size: 12px; color: #404070; max-width: 360px; line-height: 1.7; }
+  .welcome-chips { display: flex; gap: 14px; margin-top: 16px; }
+  .welcome-chip { padding: 5px 12px; border: 1px solid #303050; color: #6060a0; font-size: 10px; font-weight: 600; }
+
+  .scroll-hint { text-align: center; color: #303050; font-size: 10px; padding: 6px; border-top: 1px dashed #303050; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<h1>GNA — Updated Layouts (v2)</h1>
+<p class="subtitle">Short input boxes with units right next to them. All corners sharp (0px). Using Neon Prism palette.</p>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- WELCOME SCREEN -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">Welcome Screen (startup, no tool selected)</div>
+  <div class="app-frame">
+    <div class="sidebar">
+      <div class="sidebar-header"><div class="gna">GNA</div><div class="sub">Georgi's Nuclear Assistant</div></div>
+      <div class="sidebar-sep"></div>
+      <div class="nav-list">
+        <div class="nav-item">RDDS</div>
+        <div class="nav-item">J-Coupling</div>
+        <div class="nav-item">Talmi Calculator</div>
+        <div class="nav-item">PACE4</div>
+        <div class="nav-item">Script Launcher</div>
+        <div class="nav-item">Accelerator</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-bottom"><div class="lbl">Theme</div><select class="theme-sel"><option>Neon Prism</option></select></div>
+      <div class="sidebar-ver">v2.0</div>
+    </div>
+    <div class="content" style="padding: 0;">
+      <div class="welcome">
+        <div class="welcome-logo">GNA</div>
+        <div class="welcome-full">GEORGI'S NUCLEAR ASSISTANT</div>
+        <div class="welcome-div"></div>
+        <div class="welcome-p">Nuclear physics analysis suite for RDDS lifetime measurements, kinematics, shell model calculations, and experiment support.</div>
+        <div class="welcome-chips">
+          <div class="welcome-chip">RDDS</div>
+          <div class="welcome-chip">J-Coupling</div>
+          <div class="welcome-chip">Talmi</div>
+          <div class="welcome-chip">PACE4</div>
+          <div class="welcome-chip">Scripts</div>
+          <div class="welcome-chip">Accelerator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- RDDS MULTI DISTANCE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">RDDS — Multi Distance (short inputs)</div>
+  <div class="concept-desc">β and σ_β are single numbers → short input boxes. Table stays full-width.</div>
+
+  <div class="app-frame">
+    <div class="sidebar">
+      <div class="sidebar-header"><div class="gna">GNA</div><div class="sub">Georgi's Nuclear Assistant</div></div>
+      <div class="sidebar-sep"></div>
+      <div class="nav-list">
+        <div class="nav-item active">RDDS</div>
+        <div class="nav-item">J-Coupling</div>
+        <div class="nav-item">Talmi Calculator</div>
+        <div class="nav-item">PACE4</div>
+        <div class="nav-item">Script Launcher</div>
+        <div class="nav-item">Accelerator</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-bottom"><div class="lbl">Theme</div><select class="theme-sel"><option>Neon Prism</option></select></div>
+      <div class="sidebar-ver">v2.0</div>
+    </div>
+    <div class="content">
+      <div class="tool-header">RDDS Half-Life</div>
+      <div class="tool-desc">Recoil Distance Doppler Shift — multi distance fit</div>
+      <div class="tab-bar">
+        <div class="tab">Single Distance</div>
+        <div class="tab active">Multi Distance</div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Beam Parameters</div>
+        <div class="field-row">
+          <span class="field-label">β (recoil)</span>
+          <input class="field-input" value="0.0312">
+          <span class="field-unit"></span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">σ_β</span>
+          <input class="field-input" value="0.0005">
+          <span class="field-unit"></span>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Distance Measurements</div>
+        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+          <thead><tr>
+            <th style="background:#1c1c30; color:#b0b0d8; padding:6px; border:1px solid #303050;">d (μm)</th>
+            <th style="background:#1c1c30; color:#b0b0d8; padding:6px; border:1px solid #303050;">σ_d</th>
+            <th style="background:#1c1c30; color:#b0b0d8; padding:6px; border:1px solid #303050;">I_shifted</th>
+            <th style="background:#1c1c30; color:#b0b0d8; padding:6px; border:1px solid #303050;">σ_shift</th>
+            <th style="background:#1c1c30; color:#b0b0d8; padding:6px; border:1px solid #303050;">I_unshift</th>
+            <th style="background:#1c1c30; color:#b0b0d8; padding:6px; border:1px solid #303050;">σ_unshift</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">14</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">2</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">1240</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">45</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">860</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">32</td></tr>
+            <tr><td style="background:#0c0c14; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">25</td><td style="background:#0c0c14; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">2</td><td style="background:#0c0c14; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">1680</td><td style="background:#0c0c14; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">52</td><td style="background:#0c0c14; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">520</td><td style="background:#0c0c14; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">28</td></tr>
+            <tr><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">40</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">2</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">2100</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">61</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">310</td><td style="background:#12121e; color:#e8e8ff; padding:5px 8px; border:1px solid #303050; text-align:center;">22</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn-row">
+        <div class="btn-primary">Calculate & Fit</div>
+        <div class="btn-secondary">Add Row</div>
+        <div class="btn-secondary">Remove Row</div>
+        <div class="btn-secondary">Load JSON</div>
+        <div class="btn-secondary">Clear</div>
+      </div>
+
+      <div class="result-box"><div class="result-value">T₁/₂ = 12.4 ± 1.8 ps</div></div>
+      <div class="scroll-hint">↓ Plot below (scrollable) ↓</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ACCELERATOR — KINEMATICS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">Accelerator — Kinematics tab (short inputs + units)</div>
+  <div class="concept-desc">All single-value fields (E, A, Z) are short boxes. Unit label sits right next to the input.</div>
+
+  <div class="app-frame">
+    <div class="sidebar">
+      <div class="sidebar-header"><div class="gna">GNA</div><div class="sub">Georgi's Nuclear Assistant</div></div>
+      <div class="sidebar-sep"></div>
+      <div class="nav-list">
+        <div class="nav-item">RDDS</div>
+        <div class="nav-item">J-Coupling</div>
+        <div class="nav-item">Talmi Calculator</div>
+        <div class="nav-item">PACE4</div>
+        <div class="nav-item">Script Launcher</div>
+        <div class="nav-item active">Accelerator</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-bottom"><div class="lbl">Theme</div><select class="theme-sel"><option>Neon Prism</option></select></div>
+      <div class="sidebar-ver">v2.0</div>
+    </div>
+    <div class="content">
+      <div class="tool-header">Accelerator</div>
+      <div class="tool-desc">Beam kinematics, Coulomb barrier, and yield estimates</div>
+      <div class="tab-bar">
+        <div class="tab active">Kinematics</div>
+        <div class="tab">Beam Yield</div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Beam & Reaction</div>
+        <div class="field-row">
+          <span class="field-label">E_beam</span>
+          <input class="field-input" value="48.0">
+          <span class="field-unit">MeV</span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">A_beam</span>
+          <input class="field-input" value="13">
+          <span class="field-unit"></span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Z_beam</span>
+          <input class="field-input" value="6">
+          <span class="field-unit"></span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">A_target</span>
+          <input class="field-input" value="100">
+          <span class="field-unit"></span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Z_target</span>
+          <input class="field-input" value="42">
+          <span class="field-unit"></span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <div class="btn-primary">Calculate Kinematics</div>
+        <div class="btn-secondary">Load JSON</div>
+        <div class="btn-secondary">Clear</div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Results</div>
+        <div class="result-grid">
+          <div class="result-card">
+            <div class="result-card-label">Beam velocity</div>
+            <div class="result-card-value">β = 0.0312 (3.12% c)</div>
+          </div>
+          <div class="result-card">
+            <div class="result-card-label">Coulomb Barrier</div>
+            <div class="result-card-value">V_C = 42.3 MeV (E/V = 1.13)</div>
+          </div>
+          <div class="result-card">
+            <div class="result-card-label">CN Recoil</div>
+            <div class="result-card-value">β_CN = 0.00358</div>
+          </div>
+          <div class="result-card">
+            <div class="result-card-label">Nuclear Radii</div>
+            <div class="result-card-value">R₁ = 2.82 fm, R₂ = 5.57 fm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ACCELERATOR — BEAM YIELD -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="concept-section">
+  <div class="concept-title">Accelerator — Beam Yield tab (short inputs + units)</div>
+
+  <div class="app-frame">
+    <div class="sidebar">
+      <div class="sidebar-header"><div class="gna">GNA</div><div class="sub">Georgi's Nuclear Assistant</div></div>
+      <div class="sidebar-sep"></div>
+      <div class="nav-list">
+        <div class="nav-item">RDDS</div>
+        <div class="nav-item">J-Coupling</div>
+        <div class="nav-item">Talmi Calculator</div>
+        <div class="nav-item">PACE4</div>
+        <div class="nav-item">Script Launcher</div>
+        <div class="nav-item active">Accelerator</div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-bottom"><div class="lbl">Theme</div><select class="theme-sel"><option>Neon Prism</option></select></div>
+      <div class="sidebar-ver">v2.0</div>
+    </div>
+    <div class="content">
+      <div class="tool-header">Accelerator</div>
+      <div class="tool-desc">Beam kinematics, Coulomb barrier, and yield estimates</div>
+      <div class="tab-bar">
+        <div class="tab">Kinematics</div>
+        <div class="tab active">Beam Yield</div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Beam & Target Parameters</div>
+        <div class="field-row">
+          <span class="field-label">Beam current</span>
+          <input class="field-input" value="10.0">
+          <span class="field-unit">pnA</span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Cross-section</span>
+          <input class="field-input" value="250">
+          <span class="field-unit">mb</span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Target thickness</span>
+          <input class="field-input" value="0.5">
+          <span class="field-unit">mg/cm²</span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Target A</span>
+          <input class="field-input" value="100">
+          <span class="field-unit"></span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Detector ε</span>
+          <input class="field-input" value="0.05">
+          <span class="field-unit"></span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Excitation ratio</span>
+          <input class="field-input" value="0.25">
+          <span class="field-unit"></span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Sorter ε</span>
+          <input class="field-input" value="0.8">
+          <span class="field-unit"></span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <div class="btn-primary">Calculate Yield</div>
+        <div class="btn-secondary">Load JSON</div>
+        <div class="btn-secondary">Clear</div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Expected Yield</div>
+        <div class="result-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+          <div class="result-card">
+            <div class="result-card-label">Counts/second</div>
+            <div class="result-card-value" style="color:#40e890;">18.7</div>
+          </div>
+          <div class="result-card">
+            <div class="result-card-label">Counts/hour</div>
+            <div class="result-card-value" style="color:#40e890;">67,320</div>
+          </div>
+          <div class="result-card">
+            <div class="result-card-label">Counts/8h shift</div>
+            <div class="result-card-value" style="color:#40e890;">538,560</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align: center; padding: 40px; color: #303050;">
+  — End of updated layouts. Tell me: palette default (A1-D2), icon number (1-12), any further tweaks? —
+</div>
+
+</body>
+</html>

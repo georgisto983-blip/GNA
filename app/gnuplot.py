@@ -26,6 +26,13 @@ set tics out nomirror
 set key right top font "Helvetica,12" spacing 1.2 box
 """
 
+# Legend placement presets
+LEGEND_STYLES = {
+    "Top-right (default)": "set key right top font 'Helvetica,12' spacing 1.2 box",
+    "Outside right": "set key outside right top font 'Helvetica,12' spacing 1.2 box",
+    "Top-right opaque": "set key right top opaque font 'Helvetica,12' spacing 1.2 box",
+}
+
 # Colour cycle for data series (matches proposal figure palette)
 SERIES_COLORS = [
     "#e41a1c",  # red
@@ -240,6 +247,7 @@ def plot_pace4(
     output: Optional[str] = None,
     width: int = 900,
     height: int = 600,
+    legend_style: str = "Top-right (default)",
 ) -> tuple[str, QPixmap]:
     """Plot PACE4 σ(E) for selected residue channels.
 
@@ -260,6 +268,9 @@ def plot_pace4(
     title = reaction_label if reaction_label else "PACE4 Reaction Cross Sections"
 
     script = _PREAMBLE.format(width=width, height=height, output=output)
+    # Override legend placement
+    key_cmd = LEGEND_STYLES.get(legend_style, LEGEND_STYLES["Top-right (default)"])
+    script += f"{key_cmd}\n"
     script += f"""
 set title '{_esc(title)}' font 'Helvetica,16'
 set xlabel 'E [MeV]'

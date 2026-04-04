@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GNA — All 8 Palettes (Dark + Light)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; color: #e0e0e0; font-family: 'Segoe UI', 'Ubuntu', sans-serif; padding: 40px; }
+  h1 { text-align: center; color: #b060ff; font-size: 30px; margin-bottom: 6px; letter-spacing: 2px; }
+  .subtitle { text-align: center; color: #808099; margin-bottom: 50px; font-size: 13px; }
+
+  .palette-section { margin-bottom: 50px; border: 1px solid #222; padding: 28px; }
+  .palette-section.light-bg { background: #f0f0f4; border-color: #d0d0d8; }
+  .palette-section.dark-bg { background: #0d0d14; }
+  .palette-title { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+  .palette-desc { font-size: 12px; margin-bottom: 18px; }
+  .tag { display: inline-block; padding: 2px 10px; font-size: 10px; font-weight: bold; margin-left: 10px; letter-spacing: 0.5px; }
+
+  .swatch-row { display: flex; gap: 0; margin-bottom: 14px; }
+  .swatch { flex: 1; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; letter-spacing: 0.3px; }
+
+  .demo-app { display: flex; border: 1px solid #333; height: 360px; overflow: hidden; }
+  .demo-app.light-demo { border-color: #c0c0cc; }
+  .demo-sidebar { width: 190px; flex-shrink: 0; display: flex; flex-direction: column; }
+  .demo-sidebar-header { padding: 16px 14px 10px; }
+  .demo-sidebar-header .app-name { font-size: 20px; font-weight: 900; letter-spacing: 1px; }
+  .demo-sidebar-header .app-sub { font-size: 9px; margin-top: 2px; }
+  .demo-sep { height: 1px; margin: 0 10px; }
+  .demo-nav-item { padding: 10px 14px; font-size: 12px; font-weight: 700; cursor: default; border-left: 3px solid transparent; }
+  .demo-nav-item.active { border-left-width: 3px; border-left-style: solid; }
+
+  .demo-content { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow: auto; }
+  .demo-content h2 { font-size: 16px; font-weight: 800; margin-bottom: 3px; }
+  .demo-content .desc { font-size: 11px; margin-bottom: 14px; }
+  .demo-group { border: 1px solid; padding: 14px; margin-bottom: 10px; }
+  .demo-group-title { font-size: 10px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .demo-input-row { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; }
+  .demo-label { font-size: 11px; width: 80px; text-align: right; }
+  .demo-input { width: 100px; height: 30px; border: 1px solid; padding: 0 8px; font-size: 12px; }
+  .demo-unit { font-size: 11px; width: 40px; }
+  .demo-btn { padding: 7px 20px; border: none; font-weight: 800; font-size: 12px; cursor: default; }
+  .demo-btn-secondary { padding: 7px 14px; border: 1px solid; font-weight: 600; font-size: 11px; cursor: default; background: transparent; }
+  .demo-result { padding: 10px; border: 1px solid; font-size: 14px; font-weight: 700; margin-top: 8px; }
+  .demo-buttons { display: flex; gap: 8px; margin-top: 10px; }
+
+  .pair-row { display: flex; gap: 24px; margin-bottom: 30px; }
+  .pair-row > div { flex: 1; }
+  .pair-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding: 3px 8px; display: inline-block; }
+  .pair-label.dark { color: #b060ff; border: 1px solid #b060ff; }
+  .pair-label.light { color: #7040c0; border: 1px solid #7040c0; }
+</style>
+</head>
+<body>
+
+<h1>GNA — All 8 Palettes</h1>
+<p class="subtitle">4 dark + 4 light. Pick ONE as default. All will be available as themes.<br>Light versions are soft, airy, and easy on the eyes. Short input boxes with units next to them.</p>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- A DARK: Neon Prism -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="palette-section dark-bg">
+  <div class="palette-title" style="color:#b060ff;">A1 — Neon Prism <span class="tag" style="background:#2a1a3a; color:#b060ff;">DARK</span></div>
+  <div class="palette-desc" style="color:#6060a0;">Deep space black, electric purple primary, vivid blue accents, hot magenta highlights.</div>
+
+  <div class="swatch-row">
+    <div class="swatch" style="background:#0c0c14; color:#666;">bg</div>
+    <div class="swatch" style="background:#08080e; color:#555;">bg_dark</div>
+    <div class="swatch" style="background:#12121e; color:#888;">surface</div>
+    <div class="swatch" style="background:#1c1c30; color:#aaa;">surface2</div>
+    <div class="swatch" style="background:#262640; color:#ccc;">surface3</div>
+    <div class="swatch" style="background:#303050; color:#ddd;">border</div>
+    <div class="swatch" style="background:#b060ff; color:#fff;">primary</div>
+    <div class="swatch" style="background:#4090ff; color:#fff;">accent</div>
+    <div class="swatch" style="background:#ff40a0; color:#fff;">magenta</div>
+    <div class="swatch" style="background:#40e890; color:#111;">success</div>
+  </div>
+
+  <div class="demo-app">
+    <div class="demo-sidebar" style="background:#08080e; border-right: 1px solid #303050;">
+      <div class="demo-sidebar-header"><div class="app-name" style="color:#b060ff;">GNA</div><div class="app-sub" style="color:#6060a0;">Georgi's Nuclear Assistant</div></div>
+      <div class="demo-sep" style="background:#303050;"></div>
+      <div class="demo-nav-item active" style="background:#0c0c14; color:#b060ff; border-left-color:#b060ff;">RDDS</div>
+      <div class="demo-nav-item" style="color:#6060a0;">J-Coupling</div>
+      <div class="demo-nav-item" style="color:#6060a0;">Talmi Calculator</div>
+      <div class="demo-nav-item" style="color:#6060a0;">PACE4</div>
+      <div class="demo-nav-item" style="color:#6060a0;">Script Launcher</div>
+      <div class="demo-nav-item" style="color:#6060a0;">Accelerator</div>
+    </div>
+    <div class="demo-content" style="background:#0c0c14;">
+      <h2 style="color:#e8e8ff;">Accelerator — Kinematics</h2>
+      <div class="desc" style="color:#6060a0;">Beam kinematics and Coulomb barrier</div>
+      <div class="demo-group" style="border-color:#303050; background:#12121e;">
+        <div class="demo-group-title" style="color:#4090ff;">Beam & Reaction</div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#b0b0d8;">E_beam</span>
+          <input class="demo-input" style="background:#1c1c30; border-color:#303050; color:#e8e8ff;" value="48.0">
+          <span class="demo-unit" style="color:#6060a0;">MeV</span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#b0b0d8;">A_beam</span>
+          <input class="demo-input" style="background:#1c1c30; border-color:#303050; color:#e8e8ff;" value="13">
+          <span class="demo-unit" style="color:#6060a0;"></span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#b0b0d8;">Z_beam</span>
+          <input class="demo-input" style="background:#1c1c30; border-color:#303050; color:#e8e8ff;" value="6">
+          <span class="demo-unit" style="color:#6060a0;"></span>
+        </div>
+      </div>
+      <div class="demo-buttons">
+        <div class="demo-btn" style="background:#b060ff; color:#08080e;">Calculate</div>
+        <div class="demo-btn-secondary" style="border-color:#303050; color:#b0b0d8;">Load JSON</div>
+      </div>
+      <div class="demo-result" style="border-color:#303050; background:#12121e; color:#40e890;">β = 0.0312 (3.12% c) &nbsp;|&nbsp; V_C = 42.3 MeV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- A LIGHT: Neon Prism Light -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="palette-section light-bg">
+  <div class="palette-title" style="color:#7030c0;">A2 — Neon Prism Light <span class="tag" style="background:#ece0ff; color:#7030c0;">LIGHT</span></div>
+  <div class="palette-desc" style="color:#8080a0;">Lavender whites, warm purple accents. Soft and airy with strong purple personality.</div>
+
+  <div class="swatch-row">
+    <div class="swatch" style="background:#f8f6ff; color:#888;">bg</div>
+    <div class="swatch" style="background:#f0ecfa; color:#777;">bg_dark</div>
+    <div class="swatch" style="background:#ffffff; color:#999;">surface</div>
+    <div class="swatch" style="background:#ece6f6; color:#666;">surface2</div>
+    <div class="swatch" style="background:#ddd4ee; color:#555;">surface3</div>
+    <div class="swatch" style="background:#c8bee0; color:#444;">border</div>
+    <div class="swatch" style="background:#8040d0; color:#fff;">primary</div>
+    <div class="swatch" style="background:#3070e0; color:#fff;">accent</div>
+    <div class="swatch" style="background:#d03080; color:#fff;">magenta</div>
+    <div class="swatch" style="background:#1a9a50; color:#fff;">success</div>
+  </div>
+
+  <div class="demo-app light-demo">
+    <div class="demo-sidebar" style="background:#f0ecfa; border-right: 1px solid #c8bee0;">
+      <div class="demo-sidebar-header"><div class="app-name" style="color:#8040d0;">GNA</div><div class="app-sub" style="color:#9088b0;">Georgi's Nuclear Assistant</div></div>
+      <div class="demo-sep" style="background:#c8bee0;"></div>
+      <div class="demo-nav-item active" style="background:#f8f6ff; color:#8040d0; border-left-color:#8040d0;">RDDS</div>
+      <div class="demo-nav-item" style="color:#9088b0;">J-Coupling</div>
+      <div class="demo-nav-item" style="color:#9088b0;">Talmi Calculator</div>
+      <div class="demo-nav-item" style="color:#9088b0;">PACE4</div>
+      <div class="demo-nav-item" style="color:#9088b0;">Script Launcher</div>
+      <div class="demo-nav-item" style="color:#9088b0;">Accelerator</div>
+    </div>
+    <div class="demo-content" style="background:#f8f6ff;">
+      <h2 style="color:#2a2040;">Accelerator — Kinematics</h2>
+      <div class="desc" style="color:#9088b0;">Beam kinematics and Coulomb barrier</div>
+      <div class="demo-group" style="border-color:#c8bee0; background:#ffffff;">
+        <div class="demo-group-title" style="color:#3070e0;">Beam & Reaction</div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#504068;">E_beam</span>
+          <input class="demo-input" style="background:#f0ecfa; border-color:#c8bee0; color:#2a2040;" value="48.0">
+          <span class="demo-unit" style="color:#9088b0;">MeV</span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#504068;">A_beam</span>
+          <input class="demo-input" style="background:#f0ecfa; border-color:#c8bee0; color:#2a2040;" value="13">
+          <span class="demo-unit" style="color:#9088b0;"></span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#504068;">Z_beam</span>
+          <input class="demo-input" style="background:#f0ecfa; border-color:#c8bee0; color:#2a2040;" value="6">
+          <span class="demo-unit" style="color:#9088b0;"></span>
+        </div>
+      </div>
+      <div class="demo-buttons">
+        <div class="demo-btn" style="background:#8040d0; color:#fff;">Calculate</div>
+        <div class="demo-btn-secondary" style="border-color:#c8bee0; color:#504068;">Load JSON</div>
+      </div>
+      <div class="demo-result" style="border-color:#c8bee0; background:#ffffff; color:#1a9a50;">β = 0.0312 (3.12% c) &nbsp;|&nbsp; V_C = 42.3 MeV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- B DARK: Ultraviolet -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="palette-section dark-bg">
+  <div class="palette-title" style="color:#6080ff;">B1 — Ultraviolet <span class="tag" style="background:#101030; color:#6080ff;">DARK</span></div>
+  <div class="palette-desc" style="color:#5050a0;">Cool indigo-blue primary, clinical and scientific. Purple accent, pink secondary.</div>
+
+  <div class="swatch-row">
+    <div class="swatch" style="background:#0a0a18; color:#666;">bg</div>
+    <div class="swatch" style="background:#060610; color:#555;">bg_dark</div>
+    <div class="swatch" style="background:#101024; color:#888;">surface</div>
+    <div class="swatch" style="background:#181838; color:#aaa;">surface2</div>
+    <div class="swatch" style="background:#202048; color:#ccc;">surface3</div>
+    <div class="swatch" style="background:#282858; color:#ddd;">border</div>
+    <div class="swatch" style="background:#6080ff; color:#fff;">primary</div>
+    <div class="swatch" style="background:#c060ff; color:#fff;">accent</div>
+    <div class="swatch" style="background:#ff50b0; color:#fff;">magenta</div>
+    <div class="swatch" style="background:#30e870; color:#111;">success</div>
+  </div>
+
+  <div class="demo-app">
+    <div class="demo-sidebar" style="background:#060610; border-right: 1px solid #282858;">
+      <div class="demo-sidebar-header"><div class="app-name" style="color:#6080ff;">GNA</div><div class="app-sub" style="color:#5050a0;">Georgi's Nuclear Assistant</div></div>
+      <div class="demo-sep" style="background:#282858;"></div>
+      <div class="demo-nav-item active" style="background:#0a0a18; color:#6080ff; border-left-color:#6080ff;">RDDS</div>
+      <div class="demo-nav-item" style="color:#5050a0;">J-Coupling</div>
+      <div class="demo-nav-item" style="color:#5050a0;">Talmi Calculator</div>
+      <div class="demo-nav-item" style="color:#5050a0;">PACE4</div>
+      <div class="demo-nav-item" style="color:#5050a0;">Script Launcher</div>
+      <div class="demo-nav-item" style="color:#5050a0;">Accelerator</div>
+    </div>
+    <div class="demo-content" style="background:#0a0a18;">
+      <h2 style="color:#e0e0ff;">Accelerator — Kinematics</h2>
+      <div class="desc" style="color:#5050a0;">Beam kinematics and Coulomb barrier</div>
+      <div class="demo-group" style="border-color:#282858; background:#101024;">
+        <div class="demo-group-title" style="color:#c060ff;">Beam & Reaction</div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#a0a0d0;">E_beam</span>
+          <input class="demo-input" style="background:#181838; border-color:#282858; color:#e0e0ff;" value="48.0">
+          <span class="demo-unit" style="color:#5050a0;">MeV</span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#a0a0d0;">A_beam</span>
+          <input class="demo-input" style="background:#181838; border-color:#282858; color:#e0e0ff;" value="13">
+          <span class="demo-unit" style="color:#5050a0;"></span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#a0a0d0;">Z_beam</span>
+          <input class="demo-input" style="background:#181838; border-color:#282858; color:#e0e0ff;" value="6">
+          <span class="demo-unit" style="color:#5050a0;"></span>
+        </div>
+      </div>
+      <div class="demo-buttons">
+        <div class="demo-btn" style="background:#6080ff; color:#060610;">Calculate</div>
+        <div class="demo-btn-secondary" style="border-color:#282858; color:#a0a0d0;">Load JSON</div>
+      </div>
+      <div class="demo-result" style="border-color:#282858; background:#101024; color:#30e870;">β = 0.0312 (3.12% c) &nbsp;|&nbsp; V_C = 42.3 MeV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- B LIGHT: Ultraviolet Light -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="palette-section light-bg">
+  <div class="palette-title" style="color:#3050c0;">B2 — Ultraviolet Light <span class="tag" style="background:#e0e8ff; color:#3050c0;">LIGHT</span></div>
+  <div class="palette-desc" style="color:#7080a8;">Soft blue-grey whites, calm indigo highlights. Clean, clinical, easy on the eyes.</div>
+
+  <div class="swatch-row">
+    <div class="swatch" style="background:#f6f8ff; color:#888;">bg</div>
+    <div class="swatch" style="background:#eceffe; color:#777;">bg_dark</div>
+    <div class="swatch" style="background:#ffffff; color:#999;">surface</div>
+    <div class="swatch" style="background:#e4e8f8; color:#666;">surface2</div>
+    <div class="swatch" style="background:#d4d8f0; color:#555;">surface3</div>
+    <div class="swatch" style="background:#b8bede; color:#444;">border</div>
+    <div class="swatch" style="background:#4060d0; color:#fff;">primary</div>
+    <div class="swatch" style="background:#9050d0; color:#fff;">accent</div>
+    <div class="swatch" style="background:#c04090; color:#fff;">magenta</div>
+    <div class="swatch" style="background:#18884a; color:#fff;">success</div>
+  </div>
+
+  <div class="demo-app light-demo">
+    <div class="demo-sidebar" style="background:#eceffe; border-right: 1px solid #b8bede;">
+      <div class="demo-sidebar-header"><div class="app-name" style="color:#4060d0;">GNA</div><div class="app-sub" style="color:#8890b0;">Georgi's Nuclear Assistant</div></div>
+      <div class="demo-sep" style="background:#b8bede;"></div>
+      <div class="demo-nav-item active" style="background:#f6f8ff; color:#4060d0; border-left-color:#4060d0;">RDDS</div>
+      <div class="demo-nav-item" style="color:#8890b0;">J-Coupling</div>
+      <div class="demo-nav-item" style="color:#8890b0;">Talmi Calculator</div>
+      <div class="demo-nav-item" style="color:#8890b0;">PACE4</div>
+      <div class="demo-nav-item" style="color:#8890b0;">Script Launcher</div>
+      <div class="demo-nav-item" style="color:#8890b0;">Accelerator</div>
+    </div>
+    <div class="demo-content" style="background:#f6f8ff;">
+      <h2 style="color:#1a2040;">Accelerator — Kinematics</h2>
+      <div class="desc" style="color:#8890b0;">Beam kinematics and Coulomb barrier</div>
+      <div class="demo-group" style="border-color:#b8bede; background:#ffffff;">
+        <div class="demo-group-title" style="color:#9050d0;">Beam & Reaction</div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#3a4060;">E_beam</span>
+          <input class="demo-input" style="background:#eceffe; border-color:#b8bede; color:#1a2040;" value="48.0">
+          <span class="demo-unit" style="color:#8890b0;">MeV</span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#3a4060;">A_beam</span>
+          <input class="demo-input" style="background:#eceffe; border-color:#b8bede; color:#1a2040;" value="13">
+          <span class="demo-unit" style="color:#8890b0;"></span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#3a4060;">Z_beam</span>
+          <input class="demo-input" style="background:#eceffe; border-color:#b8bede; color:#1a2040;" value="6">
+          <span class="demo-unit" style="color:#8890b0;"></span>
+        </div>
+      </div>
+      <div class="demo-buttons">
+        <div class="demo-btn" style="background:#4060d0; color:#fff;">Calculate</div>
+        <div class="demo-btn-secondary" style="border-color:#b8bede; color:#3a4060;">Load JSON</div>
+      </div>
+      <div class="demo-result" style="border-color:#b8bede; background:#ffffff; color:#18884a;">β = 0.0312 (3.12% c) &nbsp;|&nbsp; V_C = 42.3 MeV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- C DARK: Plasma Burst -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="palette-section dark-bg">
+  <div class="palette-title" style="color:#e040c0;">C1 — Plasma Burst <span class="tag" style="background:#2a1028; color:#e040c0;">DARK</span></div>
+  <div class="palette-desc" style="color:#705088;">Hot magenta primary, deep purple surfaces. Maximum drama and personality.</div>
+
+  <div class="swatch-row">
+    <div class="swatch" style="background:#0e0810; color:#666;">bg</div>
+    <div class="swatch" style="background:#08040a; color:#555;">bg_dark</div>
+    <div class="swatch" style="background:#14101c; color:#888;">surface</div>
+    <div class="swatch" style="background:#201828; color:#aaa;">surface2</div>
+    <div class="swatch" style="background:#2c2038; color:#ccc;">surface3</div>
+    <div class="swatch" style="background:#382848; color:#ddd;">border</div>
+    <div class="swatch" style="background:#e040c0; color:#fff;">primary</div>
+    <div class="swatch" style="background:#5090ff; color:#fff;">accent</div>
+    <div class="swatch" style="background:#a040ff; color:#fff;">purple</div>
+    <div class="swatch" style="background:#40e880; color:#111;">success</div>
+  </div>
+
+  <div class="demo-app">
+    <div class="demo-sidebar" style="background:#08040a; border-right: 1px solid #382848;">
+      <div class="demo-sidebar-header"><div class="app-name" style="color:#e040c0;">GNA</div><div class="app-sub" style="color:#705088;">Georgi's Nuclear Assistant</div></div>
+      <div class="demo-sep" style="background:#382848;"></div>
+      <div class="demo-nav-item active" style="background:#0e0810; color:#e040c0; border-left-color:#e040c0;">RDDS</div>
+      <div class="demo-nav-item" style="color:#705088;">J-Coupling</div>
+      <div class="demo-nav-item" style="color:#705088;">Talmi Calculator</div>
+      <div class="demo-nav-item" style="color:#705088;">PACE4</div>
+      <div class="demo-nav-item" style="color:#705088;">Script Launcher</div>
+      <div class="demo-nav-item" style="color:#705088;">Accelerator</div>
+    </div>
+    <div class="demo-content" style="background:#0e0810;">
+      <h2 style="color:#f0e8ff;">Accelerator — Kinematics</h2>
+      <div class="desc" style="color:#705088;">Beam kinematics and Coulomb barrier</div>
+      <div class="demo-group" style="border-color:#382848; background:#14101c;">
+        <div class="demo-group-title" style="color:#5090ff;">Beam & Reaction</div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#c0a8d8;">E_beam</span>
+          <input class="demo-input" style="background:#201828; border-color:#382848; color:#f0e8ff;" value="48.0">
+          <span class="demo-unit" style="color:#705088;">MeV</span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#c0a8d8;">A_beam</span>
+          <input class="demo-input" style="background:#201828; border-color:#382848; color:#f0e8ff;" value="13">
+          <span class="demo-unit" style="color:#705088;"></span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#c0a8d8;">Z_beam</span>
+          <input class="demo-input" style="background:#201828; border-color:#382848; color:#f0e8ff;" value="6">
+          <span class="demo-unit" style="color:#705088;"></span>
+        </div>
+      </div>
+      <div class="demo-buttons">
+        <div class="demo-btn" style="background:#e040c0; color:#08040a;">Calculate</div>
+        <div class="demo-btn-secondary" style="border-color:#382848; color:#c0a8d8;">Load JSON</div>
+      </div>
+      <div class="demo-result" style="border-color:#382848; background:#14101c; color:#40e880;">β = 0.0312 (3.12% c) &nbsp;|&nbsp; V_C = 42.3 MeV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- C LIGHT: Plasma Burst Light -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="palette-section light-bg">
+  <div class="palette-title" style="color:#b02890;">C2 — Plasma Burst Light <span class="tag" style="background:#fce4f4; color:#b02890;">LIGHT</span></div>
+  <div class="palette-desc" style="color:#a080a0;">Rose-tinted whites, soft pink surfaces. Warm and inviting with magenta personality.</div>
+
+  <div class="swatch-row">
+    <div class="swatch" style="background:#fef8fc; color:#888;">bg</div>
+    <div class="swatch" style="background:#f8eff6; color:#777;">bg_dark</div>
+    <div class="swatch" style="background:#ffffff; color:#999;">surface</div>
+    <div class="swatch" style="background:#f4e8f2; color:#666;">surface2</div>
+    <div class="swatch" style="background:#e8d8e6; color:#555;">surface3</div>
+    <div class="swatch" style="background:#d0b8ce; color:#444;">border</div>
+    <div class="swatch" style="background:#b02890; color:#fff;">primary</div>
+    <div class="swatch" style="background:#3878d0; color:#fff;">accent</div>
+    <div class="swatch" style="background:#8030c0; color:#fff;">purple</div>
+    <div class="swatch" style="background:#1a8848; color:#fff;">success</div>
+  </div>
+
+  <div class="demo-app light-demo">
+    <div class="demo-sidebar" style="background:#f8eff6; border-right: 1px solid #d0b8ce;">
+      <div class="demo-sidebar-header"><div class="app-name" style="color:#b02890;">GNA</div><div class="app-sub" style="color:#a088a0;">Georgi's Nuclear Assistant</div></div>
+      <div class="demo-sep" style="background:#d0b8ce;"></div>
+      <div class="demo-nav-item active" style="background:#fef8fc; color:#b02890; border-left-color:#b02890;">RDDS</div>
+      <div class="demo-nav-item" style="color:#a088a0;">J-Coupling</div>
+      <div class="demo-nav-item" style="color:#a088a0;">Talmi Calculator</div>
+      <div class="demo-nav-item" style="color:#a088a0;">PACE4</div>
+      <div class="demo-nav-item" style="color:#a088a0;">Script Launcher</div>
+      <div class="demo-nav-item" style="color:#a088a0;">Accelerator</div>
+    </div>
+    <div class="demo-content" style="background:#fef8fc;">
+      <h2 style="color:#2a1828;">Accelerator — Kinematics</h2>
+      <div class="desc" style="color:#a088a0;">Beam kinematics and Coulomb barrier</div>
+      <div class="demo-group" style="border-color:#d0b8ce; background:#ffffff;">
+        <div class="demo-group-title" style="color:#3878d0;">Beam & Reaction</div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#503850;">E_beam</span>
+          <input class="demo-input" style="background:#f8eff6; border-color:#d0b8ce; color:#2a1828;" value="48.0">
+          <span class="demo-unit" style="color:#a088a0;">MeV</span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#503850;">A_beam</span>
+          <input class="demo-input" style="background:#f8eff6; border-color:#d0b8ce; color:#2a1828;" value="13">
+          <span class="demo-unit" style="color:#a088a0;"></span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#503850;">Z_beam</span>
+          <input class="demo-input" style="background:#f8eff6; border-color:#d0b8ce; color:#2a1828;" value="6">
+          <span class="demo-unit" style="color:#a088a0;"></span>
+        </div>
+      </div>
+      <div class="demo-buttons">
+        <div class="demo-btn" style="background:#b02890; color:#fff;">Calculate</div>
+        <div class="demo-btn-secondary" style="border-color:#d0b8ce; color:#503850;">Load JSON</div>
+      </div>
+      <div class="demo-result" style="border-color:#d0b8ce; background:#ffffff; color:#1a8848;">β = 0.0312 (3.12% c) &nbsp;|&nbsp; V_C = 42.3 MeV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- D DARK: Celestial -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="palette-section dark-bg">
+  <div class="palette-title" style="color:#a080ff;">D1 — Celestial <span class="tag" style="background:#1a1430; color:#a080ff;">DARK</span></div>
+  <div class="palette-desc" style="color:#5858a0;">Balanced soft purple, professional but still vibrant. Elegant and refined.</div>
+
+  <div class="swatch-row">
+    <div class="swatch" style="background:#0d0d18; color:#666;">bg</div>
+    <div class="swatch" style="background:#080810; color:#555;">bg_dark</div>
+    <div class="swatch" style="background:#131322; color:#888;">surface</div>
+    <div class="swatch" style="background:#1c1c34; color:#aaa;">surface2</div>
+    <div class="swatch" style="background:#262644; color:#ccc;">surface3</div>
+    <div class="swatch" style="background:#303054; color:#ddd;">border</div>
+    <div class="swatch" style="background:#a080ff; color:#fff;">primary</div>
+    <div class="swatch" style="background:#5098ff; color:#fff;">accent</div>
+    <div class="swatch" style="background:#e060b0; color:#fff;">magenta</div>
+    <div class="swatch" style="background:#44e888; color:#111;">success</div>
+  </div>
+
+  <div class="demo-app">
+    <div class="demo-sidebar" style="background:#080810; border-right: 1px solid #303054;">
+      <div class="demo-sidebar-header"><div class="app-name" style="color:#a080ff;">GNA</div><div class="app-sub" style="color:#5858a0;">Georgi's Nuclear Assistant</div></div>
+      <div class="demo-sep" style="background:#303054;"></div>
+      <div class="demo-nav-item active" style="background:#0d0d18; color:#a080ff; border-left-color:#a080ff;">RDDS</div>
+      <div class="demo-nav-item" style="color:#5858a0;">J-Coupling</div>
+      <div class="demo-nav-item" style="color:#5858a0;">Talmi Calculator</div>
+      <div class="demo-nav-item" style="color:#5858a0;">PACE4</div>
+      <div class="demo-nav-item" style="color:#5858a0;">Script Launcher</div>
+      <div class="demo-nav-item" style="color:#5858a0;">Accelerator</div>
+    </div>
+    <div class="demo-content" style="background:#0d0d18;">
+      <h2 style="color:#e4e4ff;">Accelerator — Kinematics</h2>
+      <div class="desc" style="color:#5858a0;">Beam kinematics and Coulomb barrier</div>
+      <div class="demo-group" style="border-color:#303054; background:#131322;">
+        <div class="demo-group-title" style="color:#5098ff;">Beam & Reaction</div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#a8a8d4;">E_beam</span>
+          <input class="demo-input" style="background:#1c1c34; border-color:#303054; color:#e4e4ff;" value="48.0">
+          <span class="demo-unit" style="color:#5858a0;">MeV</span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#a8a8d4;">A_beam</span>
+          <input class="demo-input" style="background:#1c1c34; border-color:#303054; color:#e4e4ff;" value="13">
+          <span class="demo-unit" style="color:#5858a0;"></span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#a8a8d4;">Z_beam</span>
+          <input class="demo-input" style="background:#1c1c34; border-color:#303054; color:#e4e4ff;" value="6">
+          <span class="demo-unit" style="color:#5858a0;"></span>
+        </div>
+      </div>
+      <div class="demo-buttons">
+        <div class="demo-btn" style="background:#a080ff; color:#080810;">Calculate</div>
+        <div class="demo-btn-secondary" style="border-color:#303054; color:#a8a8d4;">Load JSON</div>
+      </div>
+      <div class="demo-result" style="border-color:#303054; background:#131322; color:#44e888;">β = 0.0312 (3.12% c) &nbsp;|&nbsp; V_C = 42.3 MeV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- D LIGHT: Celestial Light -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="palette-section light-bg">
+  <div class="palette-title" style="color:#6050b0;">D2 — Celestial Light <span class="tag" style="background:#eee8ff; color:#6050b0;">LIGHT</span></div>
+  <div class="palette-desc" style="color:#8888b0;">Violet-tinted paper whites, gentle purple tones. The softest, most relaxed light theme.</div>
+
+  <div class="swatch-row">
+    <div class="swatch" style="background:#f9f8ff; color:#888;">bg</div>
+    <div class="swatch" style="background:#f2f0fc; color:#777;">bg_dark</div>
+    <div class="swatch" style="background:#ffffff; color:#999;">surface</div>
+    <div class="swatch" style="background:#eae6f6; color:#666;">surface2</div>
+    <div class="swatch" style="background:#dcd6f0; color:#555;">surface3</div>
+    <div class="swatch" style="background:#c4bce0; color:#444;">border</div>
+    <div class="swatch" style="background:#6850b8; color:#fff;">primary</div>
+    <div class="swatch" style="background:#3880d0; color:#fff;">accent</div>
+    <div class="swatch" style="background:#c05098; color:#fff;">magenta</div>
+    <div class="swatch" style="background:#1a904c; color:#fff;">success</div>
+  </div>
+
+  <div class="demo-app light-demo">
+    <div class="demo-sidebar" style="background:#f2f0fc; border-right: 1px solid #c4bce0;">
+      <div class="demo-sidebar-header"><div class="app-name" style="color:#6850b8;">GNA</div><div class="app-sub" style="color:#9090b0;">Georgi's Nuclear Assistant</div></div>
+      <div class="demo-sep" style="background:#c4bce0;"></div>
+      <div class="demo-nav-item active" style="background:#f9f8ff; color:#6850b8; border-left-color:#6850b8;">RDDS</div>
+      <div class="demo-nav-item" style="color:#9090b0;">J-Coupling</div>
+      <div class="demo-nav-item" style="color:#9090b0;">Talmi Calculator</div>
+      <div class="demo-nav-item" style="color:#9090b0;">PACE4</div>
+      <div class="demo-nav-item" style="color:#9090b0;">Script Launcher</div>
+      <div class="demo-nav-item" style="color:#9090b0;">Accelerator</div>
+    </div>
+    <div class="demo-content" style="background:#f9f8ff;">
+      <h2 style="color:#201838;">Accelerator — Kinematics</h2>
+      <div class="desc" style="color:#9090b0;">Beam kinematics and Coulomb barrier</div>
+      <div class="demo-group" style="border-color:#c4bce0; background:#ffffff;">
+        <div class="demo-group-title" style="color:#3880d0;">Beam & Reaction</div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#403858;">E_beam</span>
+          <input class="demo-input" style="background:#f2f0fc; border-color:#c4bce0; color:#201838;" value="48.0">
+          <span class="demo-unit" style="color:#9090b0;">MeV</span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#403858;">A_beam</span>
+          <input class="demo-input" style="background:#f2f0fc; border-color:#c4bce0; color:#201838;" value="13">
+          <span class="demo-unit" style="color:#9090b0;"></span>
+        </div>
+        <div class="demo-input-row">
+          <span class="demo-label" style="color:#403858;">Z_beam</span>
+          <input class="demo-input" style="background:#f2f0fc; border-color:#c4bce0; color:#201838;" value="6">
+          <span class="demo-unit" style="color:#9090b0;"></span>
+        </div>
+      </div>
+      <div class="demo-buttons">
+        <div class="demo-btn" style="background:#6850b8; color:#fff;">Calculate</div>
+        <div class="demo-btn-secondary" style="border-color:#c4bce0; color:#403858;">Load JSON</div>
+      </div>
+      <div class="demo-result" style="border-color:#c4bce0; background:#ffffff; color:#1a904c;">β = 0.0312 (3.12% c) &nbsp;|&nbsp; V_C = 42.3 MeV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- ALL BUTTONS COMPARISON -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="palette-section" style="background: #111;">
+  <div class="palette-title" style="color:#fff;">All 8 Palettes — Button Strip</div>
+  <div class="palette-desc" style="color:#888;">Quick visual comparison. Top row = dark, bottom row = light.</div>
+
+  <div style="display: flex; gap: 16px; align-items: center; padding: 16px 0; flex-wrap: wrap;">
+    <div style="text-align: center;">
+      <div style="background:#b060ff; color:#08080e; padding: 9px 22px; font-weight: 800; font-size: 13px; margin-bottom: 4px;">Calculate</div>
+      <span style="color:#666; font-size: 10px;">A1 Neon Prism</span>
+    </div>
+    <div style="text-align: center;">
+      <div style="background:#6080ff; color:#060610; padding: 9px 22px; font-weight: 800; font-size: 13px; margin-bottom: 4px;">Calculate</div>
+      <span style="color:#666; font-size: 10px;">B1 Ultraviolet</span>
+    </div>
+    <div style="text-align: center;">
+      <div style="background:#e040c0; color:#08040a; padding: 9px 22px; font-weight: 800; font-size: 13px; margin-bottom: 4px;">Calculate</div>
+      <span style="color:#666; font-size: 10px;">C1 Plasma Burst</span>
+    </div>
+    <div style="text-align: center;">
+      <div style="background:#a080ff; color:#080810; padding: 9px 22px; font-weight: 800; font-size: 13px; margin-bottom: 4px;">Calculate</div>
+      <span style="color:#666; font-size: 10px;">D1 Celestial</span>
+    </div>
+  </div>
+  <div style="display: flex; gap: 16px; align-items: center; padding: 0 0 16px; flex-wrap: wrap;">
+    <div style="text-align: center;">
+      <div style="background:#8040d0; color:#fff; padding: 9px 22px; font-weight: 800; font-size: 13px; margin-bottom: 4px;">Calculate</div>
+      <span style="color:#666; font-size: 10px;">A2 Neon Light</span>
+    </div>
+    <div style="text-align: center;">
+      <div style="background:#4060d0; color:#fff; padding: 9px 22px; font-weight: 800; font-size: 13px; margin-bottom: 4px;">Calculate</div>
+      <span style="color:#666; font-size: 10px;">B2 UV Light</span>
+    </div>
+    <div style="text-align: center;">
+      <div style="background:#b02890; color:#fff; padding: 9px 22px; font-weight: 800; font-size: 13px; margin-bottom: 4px;">Calculate</div>
+      <span style="color:#666; font-size: 10px;">C2 Plasma Light</span>
+    </div>
+    <div style="text-align: center;">
+      <div style="background:#6850b8; color:#fff; padding: 9px 22px; font-weight: 800; font-size: 13px; margin-bottom: 4px;">Calculate</div>
+      <span style="color:#666; font-size: 10px;">D2 Celestial Light</span>
+    </div>
+  </div>
+</div>
+
+<div style="text-align: center; padding: 40px; color: #444;">
+  — Pick ONE as the default theme (A1, A2, B1, B2, C1, C2, D1, or D2). All 8 will be available. —
+</div>
+
+</body>
+</html>

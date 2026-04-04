@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=GNA
+Comment=Georgi's Nuclear Assistant — Nuclear physics analysis suite
+Exec=bash -c 'cd /home/georgi/repos/GNA && ./run.sh'
+Icon=/home/georgi/repos/GNA/assets/gna-icon-256.png
+Terminal=false
+Categories=Science;Physics;Education;
+StartupWMClass=GNA

@@ -11,7 +11,7 @@ class NuclearUtilsPanel(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(24, 20, 24, 20)
+        layout.setContentsMargins(14, 14, 14, 14)
         layout.setSpacing(8)
 
         title = QLabel("Nuclear Utilities — Toolbox")

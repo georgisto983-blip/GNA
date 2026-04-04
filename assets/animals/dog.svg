@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Cute sitting dog silhouette with floppy ears -->
+  <g fill="#000">
+    <!-- Body -->
+    <ellipse cx="100" cy="145" rx="40" ry="40"/>
+    <!-- Head -->
+    <circle cx="100" cy="80" r="30"/>
+    <!-- Left floppy ear -->
+    <ellipse cx="68" cy="90" rx="14" ry="28" transform="rotate(-15 68 90)"/>
+    <!-- Right floppy ear -->
+    <ellipse cx="132" cy="90" rx="14" ry="28" transform="rotate(15 132 90)"/>
+    <!-- Snout -->
+    <ellipse cx="100" cy="95" rx="16" ry="12" fill="#333"/>
+    <!-- Nose -->
+    <ellipse cx="100" cy="90" rx="6" ry="5" fill="#ff8888"/>
+    <!-- Eyes -->
+    <circle cx="88" cy="75" r="5" fill="#fff"/>
+    <circle cx="112" cy="75" r="5" fill="#fff"/>
+    <circle cx="89" cy="76" r="3" fill="#333"/>
+    <circle cx="113" cy="76" r="3" fill="#333"/>
+    <!-- Tongue -->
+    <ellipse cx="100" cy="103" rx="5" ry="7" fill="#ff8888"/>
+    <!-- Tail wagging left -->
+    <path d="M 60 145 Q 35 120 40 95" stroke="#000" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <!-- Front paws -->
+    <ellipse cx="82" cy="178" rx="12" ry="8"/>
+    <ellipse cx="118" cy="178" rx="12" ry="8"/>
+  </g>
+</svg>

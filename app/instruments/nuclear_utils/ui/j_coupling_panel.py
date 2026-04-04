@@ -137,6 +137,13 @@ class JCouplingPanel(QWidget):
 
             self.shell_info.setPlainText("\n".join(lines))
 
+            from app.action_history import record
+            record(
+                "J-Coupling",
+                f"Shell occupancy: {name} Z={Z} N={N}",
+                {"z": str(Z), "n": str(N), "name": name},
+            )
+
         except ValueError:
             QMessageBox.warning(self, "Error", "Z and N must be integers.")
         except Exception as e:
@@ -181,10 +188,30 @@ class JCouplingPanel(QWidget):
             win.show()
             self._result_window = win
 
+            from app.action_history import record
+            record(
+                "J-Coupling",
+                f"Enumerate J: n={n} in j={j_str}",
+                {"z": self.z_edit.text(), "n_neutrons": self.n_edit.text(),
+                 "name": name, "j": j_str, "n_particles": str(n)},
+            )
+
         except ValueError as e:
             QMessageBox.warning(self, "Input Error", str(e))
         except Exception as e:
             QMessageBox.critical(self, "Error", str(e))
+
+    def restore_params(self, params: dict):
+        if "z" in params:
+            self.z_edit.setText(params["z"])
+        if "n_neutrons" in params:
+            self.n_edit.setText(params["n_neutrons"])
+        if "name" in params:
+            self.name_edit.setText(params["name"])
+        if "j" in params:
+            self.j_edit.setText(params["j"])
+        if "n_particles" in params:
+            self.n_particles_edit.setText(params["n_particles"])
 
     @staticmethod
     def _centered_item(text):

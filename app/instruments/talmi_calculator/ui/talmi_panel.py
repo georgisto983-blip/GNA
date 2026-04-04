@@ -1,6 +1,7 @@
 """Talmi Calculator panel — B(E2) transition probability calculator."""
 
 import json
+from pathlib import Path
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QGroupBox, QLabel,
     QLineEdit, QPushButton, QTableWidget, QTableWidgetItem,
@@ -21,7 +22,7 @@ class TalmiPanel(QWidget):
 
     def _init_ui(self):
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(24, 20, 24, 20)
+        layout.setContentsMargins(14, 14, 14, 14)
         layout.setSpacing(8)
 
         title = QLabel("Talmi Calculator — B(E2) Transition Probabilities")
@@ -71,6 +72,7 @@ class TalmiPanel(QWidget):
         self.dataset_table.setHorizontalHeaderLabels([
             "Method Name", "v₁", "v₂", "v₃", "v₄"
         ])
+        self.dataset_table.verticalHeader().setDefaultSectionSize(36)
         self.dataset_table.setMinimumWidth(700)
         self.dataset_table.setMinimumHeight(100)
         hh = self.dataset_table.horizontalHeader()
@@ -244,6 +246,14 @@ class TalmiPanel(QWidget):
                 self.source_edit.text(), self.target_edit.text()
             )
 
+            from app.action_history import record
+            record(
+                "Talmi Calculator",
+                f"B(E2): {self.source_edit.text()}→{self.target_edit.text()} (manual)",
+                {"source": self.source_edit.text(),
+                 "target": self.target_edit.text(), "mode": "manual"},
+            )
+
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Calculation failed:\n{e}")
 
@@ -267,6 +277,13 @@ class TalmiPanel(QWidget):
 
             self._populate_result_table(
                 self.result_table_json, all_results, source, target
+            )
+
+            from app.action_history import record
+            record(
+                "Talmi Calculator",
+                f"B(E2): {source}→{target} (JSON: {Path(path).name})",
+                {"json_path": path, "mode": "json"},
             )
 
         except Exception as e:
@@ -319,6 +336,8 @@ class TalmiPanel(QWidget):
         )
         if path:
             self.json_path_edit.setText(path)
+            from app.recent_files import add as _rf_add
+            _rf_add(path, "Talmi Calculator")
 
     def _save_results(self, table):
         if table.rowCount() == 0:

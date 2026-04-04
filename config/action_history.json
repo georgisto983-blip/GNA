@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "J-Coupling",
+    "description": "Enumerate J: n=3 in j=9/2",
+    "params": {
+      "z": "47",
+      "n_neutrons": "60",
+      "name": "107Ag",
+      "j": "9/2",
+      "n_particles": "3"
+    },
+    "timestamp": 1775321313.237635
+  }
+]

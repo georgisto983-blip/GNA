@@ -84,6 +84,14 @@ class SingleDistancePanel(QWidget):
             self._result_text = format_halflife(t_half)
             self.result_label.setText(self._result_text)
 
+            from app.action_history import record
+            record(
+                "Plunger (RDDS)",
+                f"Single-distance T½={t_half.value:.2f} ps",
+                {"distance": str(distance), "beta": str(beta),
+                 "area_s": str(area_s), "area_u": str(area_u)},
+            )
+
         except ValueError as e:
             QMessageBox.warning(self, "Input Error", str(e))
         except Exception as e:
@@ -104,6 +112,8 @@ class SingleDistancePanel(QWidget):
             self._populate_field(self.beta_input, data.get("beta"))
             self._populate_field(self.shifted_input, data.get("area_shifted"))
             self._populate_field(self.unshifted_input, data.get("area_unshifted"))
+            from app.recent_files import add as _rf_add
+            _rf_add(path, "Plunger (RDDS)")
         except Exception as e:
             QMessageBox.warning(self, "Error", f"Could not load file:\n{e}")
 

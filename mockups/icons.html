@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GNA — Desktop Icon Options</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #888; font-family: 'Segoe UI', 'Ubuntu', sans-serif; padding: 40px; }
+  h1 { text-align: center; color: #fff; font-size: 26px; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #ccc; margin-bottom: 40px; font-size: 12px; }
+
+  .row { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+  .icon-card { text-align: center; background: #666; padding: 20px; width: 180px; }
+  .icon-card.on-light { background: #ccc; }
+  .icon-box { margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+  .icon-label { font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .icon-card.on-light .icon-label { color: #222; }
+  .icon-sublabel { font-size: 10px; color: #bbb; }
+  .icon-card.on-light .icon-sublabel { color: #555; }
+
+  .section-title { text-align: center; font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 6px; }
+  .section-desc { text-align: center; font-size: 12px; color: #aaa; margin-bottom: 20px; }
+  hr { border: none; border-top: 1px solid #999; margin: 30px 0; }
+</style>
+</head>
+<body>
+
+<h1>GNA — Desktop Icon Candidates</h1>
+<p class="subtitle">Shown on neutral grey background to simulate how they'd look on a desktop. Pick your favourite.</p>
+
+<!-- ═══════════════════════ DARK ICONS ═══════════════════════ -->
+<div class="section-title">Dark Icons</div>
+<div class="section-desc">Dark background with purple text — best on light desktops/wallpapers</div>
+
+<div class="row">
+  <!-- 1: Plain dark -->
+  <div class="icon-card">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #12121e; border: 2px solid #303050;">
+      <span style="font-size: 32px; font-weight: 900; color: #b060ff; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">1 — Dark Plain</div>
+    <div class="icon-sublabel">Dark bg, purple text, grey border</div>
+  </div>
+
+  <!-- 2: Purple border glow -->
+  <div class="icon-card">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #08080e; border: 3px solid #b060ff; box-shadow: 0 0 16px rgba(176,96,255,0.35);">
+      <span style="font-size: 32px; font-weight: 900; color: #b060ff; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">2 — Purple Border Glow</div>
+    <div class="icon-sublabel">Dark bg, purple border + glow</div>
+  </div>
+
+  <!-- 3: Solid purple bg -->
+  <div class="icon-card">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #6030a0; border: 2px solid #8050c0;">
+      <span style="font-size: 32px; font-weight: 900; color: #fff; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">3 — Solid Purple</div>
+    <div class="icon-sublabel">Purple bg, white text</div>
+  </div>
+
+  <!-- 4: Gradient feel (simulated) -->
+  <div class="icon-card">
+    <div class="icon-box" style="width: 96px; height: 96px; background: linear-gradient(135deg, #1a1030, #301848); border: 2px solid #4020a0;">
+      <span style="font-size: 32px; font-weight: 900; color: #c080ff; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">4 — Dark Gradient</div>
+    <div class="icon-sublabel">Dark-to-deep-purple gradient</div>
+  </div>
+
+  <!-- 5: Minimal dark, thicker letters -->
+  <div class="icon-card">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #0c0c14;">
+      <span style="font-size: 36px; font-weight: 900; color: #b060ff; letter-spacing: 2px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">5 — Borderless Dark</div>
+    <div class="icon-sublabel">No border, pure dark + text</div>
+  </div>
+
+  <!-- 6: Blue primary variant -->
+  <div class="icon-card">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #0a0a18; border: 2px solid #282858;">
+      <span style="font-size: 32px; font-weight: 900; color: #6080ff; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">6 — Ultraviolet Dark</div>
+    <div class="icon-sublabel">Blue text variant (for B palette)</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════ LIGHT ICONS ═══════════════════════ -->
+<div class="section-title">Light Icons</div>
+<div class="section-desc">Light/white background with purple text — best on dark desktops/wallpapers</div>
+
+<div class="row">
+  <!-- 7: Light plain -->
+  <div class="icon-card on-light">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #f8f6ff; border: 2px solid #c8bee0;">
+      <span style="font-size: 32px; font-weight: 900; color: #7030c0; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">7 — Light Plain</div>
+    <div class="icon-sublabel">Lavender bg, deep purple text</div>
+  </div>
+
+  <!-- 8: White with purple border -->
+  <div class="icon-card on-light">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #ffffff; border: 3px solid #8040d0;">
+      <span style="font-size: 32px; font-weight: 900; color: #8040d0; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">8 — White + Purple Border</div>
+    <div class="icon-sublabel">Clean white, strong purple frame</div>
+  </div>
+
+  <!-- 9: Soft lavender fill -->
+  <div class="icon-card on-light">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #e8e0f8; border: 2px solid #c4b8e8;">
+      <span style="font-size: 32px; font-weight: 900; color: #5030a0; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">9 — Soft Lavender</div>
+    <div class="icon-sublabel">Gentle lavender fill, deep text</div>
+  </div>
+
+  <!-- 10: Light gradient -->
+  <div class="icon-card on-light">
+    <div class="icon-box" style="width: 96px; height: 96px; background: linear-gradient(135deg, #f0e8ff, #e0d4ff); border: 2px solid #c0b0e8;">
+      <span style="font-size: 32px; font-weight: 900; color: #6040b0; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">10 — Light Gradient</div>
+    <div class="icon-sublabel">Soft lavender gradient</div>
+  </div>
+
+  <!-- 11: White borderless -->
+  <div class="icon-card on-light">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #ffffff;">
+      <span style="font-size: 36px; font-weight: 900; color: #7030c0; letter-spacing: 2px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">11 — White Borderless</div>
+    <div class="icon-sublabel">Pure white, no border</div>
+  </div>
+
+  <!-- 12: Rose tint (for C palette) -->
+  <div class="icon-card on-light">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #fff0f8; border: 2px solid #e0b0d0;">
+      <span style="font-size: 32px; font-weight: 900; color: #b02890; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">12 — Rose Light</div>
+    <div class="icon-sublabel">Pink tint (for Plasma palette)</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════ SIZE COMPARISON ═══════════════════════ -->
+<div class="section-title">Size Comparison (Icon #2 at different sizes)</div>
+<div class="section-desc">How the chosen icon looks at standard desktop sizes</div>
+
+<div class="row">
+  <div class="icon-card">
+    <div class="icon-box" style="width: 128px; height: 128px; background: #08080e; border: 3px solid #b060ff; box-shadow: 0 0 16px rgba(176,96,255,0.35);">
+      <span style="font-size: 42px; font-weight: 900; color: #b060ff; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">128×128</div>
+  </div>
+  <div class="icon-card">
+    <div class="icon-box" style="width: 96px; height: 96px; background: #08080e; border: 3px solid #b060ff; box-shadow: 0 0 16px rgba(176,96,255,0.35);">
+      <span style="font-size: 32px; font-weight: 900; color: #b060ff; letter-spacing: 3px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">96×96</div>
+  </div>
+  <div class="icon-card">
+    <div class="icon-box" style="width: 64px; height: 64px; background: #08080e; border: 2px solid #b060ff; box-shadow: 0 0 12px rgba(176,96,255,0.35);">
+      <span style="font-size: 20px; font-weight: 900; color: #b060ff; letter-spacing: 2px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">64×64</div>
+  </div>
+  <div class="icon-card">
+    <div class="icon-box" style="width: 48px; height: 48px; background: #08080e; border: 2px solid #b060ff; box-shadow: 0 0 10px rgba(176,96,255,0.3);">
+      <span style="font-size: 14px; font-weight: 900; color: #b060ff; letter-spacing: 1px; font-family: 'Consolas', 'Courier New', monospace;">GNA</span>
+    </div>
+    <div class="icon-label">48×48</div>
+  </div>
+</div>
+
+<div style="text-align: center; padding: 30px; color: #aaa; font-size: 13px;">
+  — Tell me the number (1–12) of your preferred icon. You can also mix: e.g. "2 for dark desktop, 8 for light desktop". —
+</div>
+
+</body>
+</html>
