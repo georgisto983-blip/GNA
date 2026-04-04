@@ -25,7 +25,7 @@ class BeamYieldPanel(QWidget):
             ("Beam current:", "pnA", "beam_current", "2"),
             ("Cross-section:", "mb", "cross_section", "70"),
             ("Target thickness:", "mg/cm²", "target_thickness", "1.3"),
-            ("Target A:", "g/mol", "target_A", "100"),
+            ("Target A:", "", "target_A", "100"),
             ("Detector efficiency:", "(0–1)", "det_eff", "0.01"),
             ("Excitation ratio:", "(0–1)", "exc_ratio", "0.08"),
             ("Sorter efficiency:", "(0–1)", "sort_eff", "0.05"),

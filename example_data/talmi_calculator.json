@@ -1,0 +1,10 @@
+{
+    "source_nucleus": "104Cd",
+    "target_nucleus": "103Ag",
+    "datasets": [
+        {
+            "method": "Experimental",
+            "vector": [11.5, 8.2, 21.0, 5.8]
+        }
+    ]
+}

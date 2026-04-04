@@ -1,13 +1,13 @@
-"""ESMcalc instrument — Empirical Shell Model B(E2) transition probabilities."""
+"""Talmi Calculator instrument — Empirical Shell Model B(E2) transition probabilities."""
 
 from PyQt6.QtWidgets import QWidget
 from app.instruments.base_instrument import BaseInstrument
-from app.instruments.esmcalc.ui.esmcalc_panel import ESMcalcPanel
+from app.instruments.talmi_calculator.ui.talmi_panel import TalmiPanel
 
 
-class ESMcalcInstrument(BaseInstrument):
+class TalmiCalculatorInstrument(BaseInstrument):
     def name(self) -> str:
-        return "ESMcalc"
+        return "Talmi Calculator"
 
     def description(self) -> str:
         return (
@@ -19,8 +19,8 @@ class ESMcalcInstrument(BaseInstrument):
         return "\U0001f4ca"  # bar chart emoji
 
     def create_panel(self, parent: QWidget = None) -> QWidget:
-        return ESMcalcPanel(parent)
+        return TalmiPanel(parent)
 
 
 def create_instrument():
-    return ESMcalcInstrument()
+    return TalmiCalculatorInstrument()

@@ -4,13 +4,16 @@ import json
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QGroupBox, QLabel,
     QLineEdit, QPushButton, QTableWidget, QTableWidgetItem,
-    QFileDialog, QMessageBox, QHeaderView,
+    QFileDialog, QMessageBox, QHeaderView, QScrollArea,
 )
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap
 from uncertainties import ufloat, UFloat
 
 from app.widgets import format_halflife
 from app.instruments.plunger import calculator
-from app.instruments.plunger.plotter import create_canvas, plot_rdds_fit
+from app.instruments.plunger.plotter import plot_rdds_fit
+from app.result_window import ResultWindow
 
 
 class MultiDistancePanel(QWidget):
@@ -83,8 +86,13 @@ class MultiDistancePanel(QWidget):
         # ── Results area (plot + text) ──
         results_layout = QHBoxLayout()
 
-        self.figure, self.canvas = create_canvas()
-        results_layout.addWidget(self.canvas, stretch=2)
+        self._plot_scroll = QScrollArea()
+        self._plot_scroll.setWidgetResizable(True)
+        self._plot_label = QLabel("Plot will appear after calculation")
+        self._plot_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._plot_scroll.setWidget(self._plot_label)
+        self._last_plot_path: str | None = None
+        results_layout.addWidget(self._plot_scroll, stretch=2)
 
         result_panel = QVBoxLayout()
         self.result_label = QLabel("Result will appear here")
@@ -96,6 +104,11 @@ class MultiDistancePanel(QWidget):
         save_btn.setProperty("secondary", True)
         save_btn.clicked.connect(self._save_result)
         result_panel.addWidget(save_btn)
+
+        show_btn = QPushButton("Show in Window")
+        show_btn.setProperty("secondary", True)
+        show_btn.clicked.connect(self._show_result_window)
+        result_panel.addWidget(show_btn)
         result_panel.addStretch()
         results_layout.addLayout(result_panel, stretch=1)
 
@@ -175,8 +188,10 @@ class MultiDistancePanel(QWidget):
             else:
                 t_label = f"= {t_ps:.2f} ps"
 
-            plot_rdds_fit(self.figure, x, x_err, y, y_err, odr_out, t_label)
-            self.canvas.draw()
+            path, pixmap = plot_rdds_fit(x, x_err, y, y_err, odr_out, t_label)
+            self._last_plot_path = path
+            self._plot_label.setPixmap(pixmap)
+            self._plot_label.setText("")
 
         except ValueError as e:
             QMessageBox.warning(self, "Input Error", str(e))
@@ -235,40 +250,50 @@ class MultiDistancePanel(QWidget):
             return
 
         path, _ = QFileDialog.getSaveFileName(
-            self, "Save Result", "rdds_multi_result.txt", "Text Files (*.txt)"
+            self, "Save Result", "rdds_multi_result.pdf",
+            "PDF Files (*.pdf);;Text Files (*.txt)"
         )
         if not path:
             return
 
-        # Text report
-        with open(path, "w") as f:
-            f.write("GNA \u2014 RDDS Half-Life (Multiple Distances)\n")
-            f.write("=" * 55 + "\n\n")
-            f.write(
-                f"Beta (v/c):  {self.beta_value.text()} "
-                f"\u00b1 {self.beta_unc.text()}\n\n"
+        if path.endswith(".pdf"):
+            from app.pdf_export import save_plot_pdf
+            save_plot_pdf(
+                path, self._last_plot_path or "",
+                "RDDS \u2014 Linear Fit to Determine Half-Life",
+                subtitle=self._result_text,
             )
-            headers = [
-                "d(\u00b5m)", "\u03c3_d", "I_s", "\u03c3_s", "I_u", "\u03c3_u"
-            ]
-            f.write("\t".join(headers) + "\n")
-            for r in range(self.table.rowCount()):
-                row = []
-                for c in range(6):
-                    item = self.table.item(r, c)
-                    row.append(item.text() if item else "")
-                f.write("\t".join(row) + "\n")
-            f.write("\n" + "=" * 55 + "\n")
-            f.write(f"{self._result_text}\n")
+        else:
+            with open(path, "w") as f:
+                f.write("GNA \u2014 RDDS Half-Life (Multiple Distances)\n")
+                f.write("=" * 55 + "\n\n")
+                f.write(
+                    f"Beta (v/c):  {self.beta_value.text()} "
+                    f"\u00b1 {self.beta_unc.text()}\n\n"
+                )
+                headers = [
+                    "d(\u00b5m)", "\u03c3_d", "I_s", "\u03c3_s", "I_u", "\u03c3_u"
+                ]
+                f.write("\t".join(headers) + "\n")
+                for r in range(self.table.rowCount()):
+                    row = []
+                    for c in range(6):
+                        item = self.table.item(r, c)
+                        row.append(item.text() if item else "")
+                    f.write("\t".join(row) + "\n")
+                f.write("\n" + "=" * 55 + "\n")
+                f.write(f"{self._result_text}\n")
 
-        # Plot image
-        plot_path = path.rsplit(".", 1)[0] + "_plot.png"
-        self.figure.savefig(
-            plot_path, dpi=150, bbox_inches="tight",
-            facecolor=self.figure.get_facecolor(),
-        )
+        QMessageBox.information(self, "Saved", f"Result saved to:\n{path}")
 
-        QMessageBox.information(
-            self, "Saved",
-            f"Result saved to:\n{path}\n\nPlot saved to:\n{plot_path}",
-        )
+    def _show_result_window(self):
+        if not self._result_text:
+            QMessageBox.information(self, "Info", "No result to show yet.")
+            return
+
+        win = ResultWindow("RDDS \u2014 Linear Fit to Determine Half-Life", parent=self)
+        win.set_subtitle(self._result_text)
+        if self._last_plot_path:
+            win.set_plot(self._last_plot_path)
+        win.show()
+        self._result_window = win

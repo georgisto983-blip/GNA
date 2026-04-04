@@ -1,0 +1,63 @@
+format GASP
+
+* Parameters (suppressedDetector - Ge)
+* 0         1         2         3            4             5
+* Energy    Time(ns)  Time(ps)  Energy BGO   Time BGO(ns)  Time BGO(ps)
+*
+* Parameters (psdDetector)
+* 0         1         2         3
+* Energy    Time(ns)  Time(ps)  Pulse Shape Discrimination  
+*
+* Parameters (detector - La, Si)
+* 0         1         2         
+* Energy    Time(ns)  Time(ps)      
+*
+* G = HPGe
+* L = LaBr/LaCe
+* S = Solar Cells
+* T = Pulser
+* F0 = Run Timestamp in seconds
+*
+* G  geometry:
+*
+* +A = 0 - 4
+* +B = 5 - 9
+* -B = 10 - 14
+* -A = 15 - 19
+
+* L  geometry:
+*
+* C = 0 - 4
+*
+*  Fine time = 0.9765625 ps
+
+
+header      F       	 1  65536 PLUS 5 65536 65536 65536 65536 65536 
+detector    G  25   	 6  65536 65536 65536 65536 65536 65536 
+detector    S  6    	 3  65536 65536 65536 
+detector    T  25    	 3  65536 65536 65536 
+
+detector    A  25  PLUS  6  65536 65536 65536 65536 65536 65536 
+detector    D  25  PLUS  6  65536 65536 65536 65536 65536 65536
+
+pairdef ../../cal/Ring2Ring.pairs
+
+recal G0 ../../cal/cal_gnuplot_2.cal			NORUN  ZERO  0.000  1.000     10    16384    0    25
+recal G0 ../../cal/gainmatch_11um.cal	          RUN  ZERO  0.000  1.000     10    16384    0    25
+recal G1 ../../cal/time_cal.cal                       NORUN  ZERO  0.000  1.000     10    16384    0    25
+
+******!!!!!!!!!!!!!!!!!!!!
+*recal G4 ../../cal/BGO_time.cal                       NORUN  ZERO  0.000  1.000     10    16384    0    25
+
+
+gate G0 40 8000 IN 1 25
+
+*sort3d_pair G0 G0 P0 Ge_Ge_pair_11um Res 2048 2048 56 Step 128 128 4
+sort3d_pair G0 G0 P0 Ge_Ge_pair_11um Res 8192 8192 96 Step 128 128 4
+
+*SORT2D Gi G0 en_cal.cmat RES 25 16384 STEP 25 256
+
+*SORT2D Gi G0 test.cmat RES 25  32768 STEP 25  256
+
+*proje
+

@@ -3,8 +3,11 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QGroupBox, QLabel,
     QLineEdit, QPushButton, QMessageBox, QTextEdit, QGridLayout,
+    QTableWidget, QTableWidgetItem, QHeaderView,
 )
+from PyQt6.QtCore import Qt
 from app.instruments.nuclear_utils import calculator
+from app.result_window import ResultWindow
 
 
 class JCouplingPanel(QWidget):
@@ -82,10 +85,15 @@ class JCouplingPanel(QWidget):
         # ── Results ──
         result_group = QGroupBox("Allowed J Values")
         result_layout = QVBoxLayout(result_group)
-        self.result_label = QLabel("")
-        self.result_label.setProperty("result", True)
-        self.result_label.setWordWrap(True)
-        result_layout.addWidget(self.result_label)
+        self._j_table = QTableWidget()
+        self._j_table.setColumnCount(2)
+        self._j_table.setHorizontalHeaderLabels(["Coupled J", "Constituent m_j projections"])
+        self._j_table.setAlternatingRowColors(True)
+        self._j_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        hdr = self._j_table.horizontalHeader()
+        hdr.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        hdr.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        result_layout.addWidget(self._j_table)
         layout.addWidget(result_group)
 
         layout.addStretch()
@@ -139,17 +147,48 @@ class JCouplingPanel(QWidget):
             j_str = self.j_edit.text().strip()
             n = int(self.n_particles_edit.text())
 
-            J_values = calculator.enumerate_J_values(j_str, n)
+            j_with_proj = calculator.enumerate_J_with_projections(j_str, n)
 
-            J_strs = [str(J) for J in J_values]
-            text = (
-                f"n = {n} particles in j = {j_str} orbital:\n\n"
-                f"Allowed J values:  {', '.join(J_strs)}\n\n"
-                f"Total distinct J states: {len(J_values)}"
-            )
-            self.result_label.setText(text)
+            # Populate embedded table — sorted by increasing J
+            self._j_table.setRowCount(len(j_with_proj))
+            headers = ["Coupled J", "Constituent m_j projections"]
+            rows_data = []
+            for i, (J, combos) in enumerate(j_with_proj):
+                j_text = str(J)
+                # Format each combination as (m1, m2, ..., mn)
+                combo_strs = []
+                for combo in combos:
+                    parts = [str(m) for m in combo]
+                    combo_strs.append("(" + ", ".join(parts) + ")")
+                constituent = "  ".join(combo_strs)
+                self._j_table.setItem(
+                    i, 0, self._centered_item(j_text)
+                )
+                self._j_table.setItem(
+                    i, 1, self._centered_item(constituent)
+                )
+                rows_data.append([j_text, constituent])
+
+            # Open result window
+            name = self.name_edit.text().strip() or ""
+            subtitle = (
+                f"{name}  —  " if name else ""
+            ) + f"n = {n} particles in j = {j_str} orbital"
+
+            win = ResultWindow("J-Coupling Results", parent=self)
+            win.set_subtitle(subtitle)
+            win.set_table(headers, rows_data)
+            win.show()
+            self._result_window = win
 
         except ValueError as e:
             QMessageBox.warning(self, "Input Error", str(e))
         except Exception as e:
             QMessageBox.critical(self, "Error", str(e))
+
+    @staticmethod
+    def _centered_item(text):
+        item = QTableWidgetItem(str(text))
+        item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+        item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+        return item

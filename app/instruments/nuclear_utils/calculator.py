@@ -258,6 +258,76 @@ def enumerate_J_values(j_orbital, n_particles):
     return sorted(set(J_values))
 
 
+def enumerate_J_with_projections(j_orbital, n_particles):
+    """Enumerate allowed J values with their m_j projection combinations.
+
+    For each allowed J, finds all ways to pick n distinct m_j values
+    (Pauli exclusion) from {-j, -j+1, ..., j} that sum to M = J.
+    Combinations are sorted by highest projection first, then second, etc.
+
+    Parameters
+    ----------
+    j_orbital : str or Fraction
+        Single-particle angular momentum, e.g. "9/2".
+    n_particles : int
+        Number of particles (or holes) in the orbital.
+
+    Returns
+    -------
+    list of (Fraction, list[tuple[Fraction, ...]])
+        Sorted by increasing J. Each entry is (J, [combos]).
+    """
+    if isinstance(j_orbital, str):
+        parts = j_orbital.split("/")
+        if len(parts) == 2:
+            j = Fraction(int(parts[0]), int(parts[1]))
+        else:
+            j = Fraction(int(parts[0]))
+    else:
+        j = Fraction(j_orbital)
+
+    if n_particles == 0:
+        return [(Fraction(0), [()])]
+
+    if n_particles == 1:
+        return [(j, [(j,)])]
+
+    m_values = [Fraction(-j.numerator + 2 * k, j.denominator)
+                for k in range(int(2 * j) + 1)]
+
+    from itertools import combinations
+    configs = list(combinations(m_values, n_particles))
+
+    # Get allowed J values
+    M_counts: dict[Fraction, int] = {}
+    for config in configs:
+        M = sum(config)
+        M_counts[M] = M_counts.get(M, 0) + 1
+
+    J_set: set[Fraction] = set()
+    M_positive = sorted([M for M in M_counts if M >= 0], reverse=True)
+    for M in M_positive:
+        n_at_M = M_counts.get(M, 0)
+        n_at_M_plus_1 = M_counts.get(M + 1, 0)
+        n_J = n_at_M - n_at_M_plus_1
+        if n_J > 0:
+            J_set.add(M)
+
+    # For each J, collect combos where sum(m_j) = J
+    result = []
+    for J in sorted(J_set):
+        combos = [c for c in configs if sum(c) == J]
+        # Sort each combo descending by value, then sort combos
+        # by highest projection first, then second, etc.
+        combos_sorted = sorted(
+            [tuple(sorted(c, reverse=True)) for c in combos],
+            reverse=True,
+        )
+        result.append((J, combos_sorted))
+
+    return result
+
+
 def shell_model_occupancy(Z, N):
     """Determine proton and neutron orbital occupancy in the nuclear shell model.
 

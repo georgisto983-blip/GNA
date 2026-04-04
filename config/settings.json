@@ -1,5 +1,7 @@
 {
-  "script_directories": [],
+  "script_directories": [
+    "/home/georgi/repos/GNA/example_data/script_launcher_test/matrices"
+  ],
   "last_input_dir": "",
   "last_save_dir": ""
 }

@@ -1,4 +1,4 @@
-"""ESMcalc panel — Talmi B(E2) transition probability calculator."""
+"""Talmi Calculator panel — B(E2) transition probability calculator."""
 
 import json
 from PyQt6.QtWidgets import (
@@ -8,10 +8,11 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 
-from app.instruments.esmcalc import calculator
+from app.instruments.talmi_calculator import calculator
+from app.result_window import ResultWindow
 
 
-class ESMcalcPanel(QWidget):
+class TalmiPanel(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._matrix = None
@@ -23,7 +24,7 @@ class ESMcalcPanel(QWidget):
         layout.setContentsMargins(24, 20, 24, 20)
         layout.setSpacing(8)
 
-        title = QLabel("ESMcalc — B(E2) Transition Probabilities")
+        title = QLabel("Talmi Calculator — B(E2) Transition Probabilities")
         title.setProperty("heading", True)
         layout.addWidget(title)
 
@@ -272,7 +273,7 @@ class ESMcalcPanel(QWidget):
             QMessageBox.critical(self, "Error", f"Failed:\n{e}")
 
     def _populate_result_table(self, table, all_results, source, target):
-        """Fill a QTableWidget with B(E2) results."""
+        """Fill a QTableWidget with B(E2) results and open result window."""
         methods = list(all_results.keys())
         labels = calculator.TRANSITION_LABELS
 
@@ -281,13 +282,29 @@ class ESMcalcPanel(QWidget):
         table.setRowCount(len(labels))
         table.setHorizontalHeaderLabels(headers)
 
+        rows_data = []
         for i, (ji, jf) in enumerate(labels):
             table.setItem(i, 0, self._centered_item(ji))
             table.setItem(i, 1, self._centered_item(jf))
+            row = [ji, jf]
             for j, method in enumerate(methods):
                 val = all_results[method][i]
                 text = "n/a" if (val is None or val != val) else f"{val:.2f}"
                 table.setItem(i, j + 2, self._centered_item(text))
+                row.append(text)
+            rows_data.append(row)
+
+        # Open result in separate window
+        subtitle = ""
+        if source and target:
+            subtitle = f"{source} → {target}"
+
+        win = ResultWindow("Talmi Calculator — B(E2) Results", parent=self)
+        win.set_subtitle(subtitle)
+        win.set_table(headers, rows_data, numeric_cols=list(range(2, len(headers))))
+        win.show()
+        # Keep reference so window is not garbage-collected
+        self._result_window = win
 
     @staticmethod
     def _centered_item(text):
@@ -309,25 +326,46 @@ class ESMcalcPanel(QWidget):
             return
 
         path, _ = QFileDialog.getSaveFileName(
-            self, "Save Results", "esmcalc_results.txt",
-            "Text Files (*.txt);;CSV Files (*.csv)",
+            self, "Save Results", "talmi_results.pdf",
+            "PDF Files (*.pdf);;Text Files (*.txt);;CSV Files (*.csv)",
         )
         if not path:
             return
 
-        sep = "," if path.endswith(".csv") else "\t"
-        with open(path, "w") as f:
-            # Header
-            headers = []
-            for c in range(table.columnCount()):
-                headers.append(table.horizontalHeaderItem(c).text())
-            f.write(sep.join(headers) + "\n")
+        headers = []
+        for c in range(table.columnCount()):
+            headers.append(table.horizontalHeaderItem(c).text())
 
-            for r in range(table.rowCount()):
-                row_data = []
-                for c in range(table.columnCount()):
-                    item = table.item(r, c)
-                    row_data.append(item.text() if item else "")
-                f.write(sep.join(row_data) + "\n")
+        rows = []
+        for r in range(table.rowCount()):
+            row_data = []
+            for c in range(table.columnCount()):
+                item = table.item(r, c)
+                row_data.append(item.text() if item else "")
+            rows.append(row_data)
+
+        if path.endswith(".pdf"):
+            from app.pdf_export import save_table_pdf
+            # Ji/Jf columns are narrow; result columns fill remaining space
+            n_result_cols = len(headers) - 2
+            page_w = 190.0  # A4 usable width in mm (210 - margins)
+            ji_jf_w = 20.0
+            result_w = (page_w - 2 * ji_jf_w) / max(n_result_cols, 1)
+            col_widths = [ji_jf_w, ji_jf_w] + [result_w] * n_result_cols
+            subtitle = ""
+            src = self.source_edit.text().strip()
+            tgt = self.target_edit.text().strip()
+            if src and tgt:
+                subtitle = f"{src} → {tgt}"
+            save_table_pdf(
+                path, "Talmi Calculator — B(E2) Results", headers, rows,
+                subtitle=subtitle, col_widths=col_widths,
+            )
+        else:
+            sep = "," if path.endswith(".csv") else "\t"
+            with open(path, "w") as f:
+                f.write(sep.join(headers) + "\n")
+                for row_data in rows:
+                    f.write(sep.join(row_data) + "\n")
 
         QMessageBox.information(self, "Saved", f"Results saved to:\n{path}")

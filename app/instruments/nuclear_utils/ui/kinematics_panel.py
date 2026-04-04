@@ -23,9 +23,9 @@ class KinematicsPanel(QWidget):
 
         fields = [
             ("Beam energy:", "MeV", "E_beam", "59"),
-            ("Beam A:", "amu", "A_beam", "13"),
+            ("Beam A:", "", "A_beam", "13"),
             ("Beam Z:", "", "Z_beam", "6"),
-            ("Target A:", "amu", "A_target", "100"),
+            ("Target A:", "", "A_target", "100"),
             ("Target Z:", "", "Z_target", "42"),
         ]
         self._inputs = {}
